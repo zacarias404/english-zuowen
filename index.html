@@ -365,7 +365,8 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 .g-label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin:0 0 6px}
 .grade-form textarea,.modal input{width:100%;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.55);padding:10px 12px;font-family:var(--serif);font-size:13.5px;line-height:1.75;color:var(--ink);outline:none;resize:vertical}
 .grade-form textarea:focus,.modal input:focus{border-color:var(--red-soft)}
-#gradePrompt{font-size:12.5px;min-height:66px}
+#gradePrompt{font-size:12.5px;min-height:250px;line-height:1.75;font-family:var(--mono)}
+@media(max-width:560px){#gradePrompt{font-size:11.5px;min-height:270px}}
 .g-meta{display:flex;justify-content:space-between;gap:10px;font-size:10.5px;color:var(--muted);margin:2px 0 12px;flex-wrap:wrap}
 .g-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn-primary{background:var(--red);color:#fff;border:1px solid var(--red);border-radius:999px;padding:8px 18px;font-size:12.5px;transition:.16s;box-shadow:0 6px 16px -10px rgba(168,52,42,.8)}
@@ -560,6 +561,24 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 .src-ref{font-family:var(--mono);font-size:10px;color:var(--blue);border-bottom:1px solid rgba(47,74,99,.3);margin-left:3px}
 .src-ref:hover{color:var(--red);border-color:var(--red)}
 @media(max-width:560px){.src-list{grid-template-columns:1fr}.pred-actions .btn-primary{width:100%}}
+
+/* ---------- v4: 批改区真题选题器 ---------- */
+.pp-wrap{border:1px solid var(--line);background:rgba(255,255,255,.42);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.pp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.pp-head b{font-family:var(--serif);font-size:13.5px}
+.pp-head span{font-size:10.5px;color:var(--muted);margin-left:8px}
+.pp-row{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end}
+.pp-row label{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--muted)}
+.pp-row .select{min-width:116px;font-size:12px}
+.pp-row .select:disabled{opacity:.45;cursor:not-allowed}
+.pp-info{font-size:11.5px;line-height:1.75;color:var(--ink-2);margin-top:9px;border-left:2px solid var(--gold);padding-left:9px;min-height:18px}
+.pp-info .pp-tag{font-family:var(--mono);font-size:10px;color:var(--green)}
+.pp-info.pp-warn{border-left-color:var(--red);color:var(--red)}
+.pp-info.pp-custom{border-left-color:var(--blue);color:var(--blue)}
+.pp-src{font-size:10px;color:var(--muted);line-height:1.75;margin-top:8px}
+.pp-src b{color:var(--ink-2);font-weight:600}
+.pp-edit{margin-top:5px;font-size:10.5px;color:var(--muted)}
+@media(max-width:560px){.pp-row label{flex:1;min-width:0}.pp-row .select{min-width:0;width:100%}.pp-head span{display:block;margin:2px 0 0}}
 </style>
 </head>
 <body>
@@ -823,9 +842,35 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
             </div>
           </div>
 
+          <div class="pp-wrap" id="ppWrap">
+            <div class="pp-head">
+              <div><b>📄 从真题选试卷题目</b><span>选完自动填入下方；题目框仍可自己改</span></div>
+              <button class="pill-btn" id="ppManual" type="button">自己写 / 清空题目</button>
+            </div>
+            <div class="pp-row">
+              <label>卷别
+                <select id="ppSubject" class="select" aria-label="选择英语一或英语二">
+                  <option value="1">英语一</option>
+                  <option value="2">英语二</option>
+                </select>
+              </label>
+              <label>年份
+                <select id="ppYear" class="select" aria-label="选择试卷年份"></select>
+              </label>
+              <label>题型
+                <select id="ppScope" class="select" aria-label="选择大作文或小作文">
+                  <option value="big">大作文</option>
+                  <option value="small">小作文</option>
+                </select>
+              </label>
+            </div>
+            <div class="pp-info" id="ppInfo"></div>
+            <div class="pp-src">题目框内容会<b>原样发给 AI</b> 作为批改依据：英语一填入<b>英文 Directions 原文</b>（2000—2026），大作文另附图画/图表内容描述；英语二暂为要点转述。英语二 2010 年才开考、英语一小作文 2005 年才新增，这些年份没有题目、不会编造。题目框可随时改写。</div>
+          </div>
+
           <div class="g-field">
-            <label class="g-label" for="gradePrompt">题目 / 要求（可选，建议填）</label>
-            <textarea id="gradePrompt" rows="3" placeholder="粘贴题目、图画描述或小作文要求；填了才能判断“是否切题”。"></textarea>
+            <label class="g-label" for="gradePrompt">题目 / 要求（会原样发给 AI，作为批改判断「是否切题」的依据；可自己写，也可由上方的真题选择器填入）</label>
+            <textarea id="gradePrompt" rows="13" placeholder="粘贴题目、图画描述或小作文要求；填了才能判断“是否切题”。"></textarea>
           </div>
 
           <div class="g-field">
@@ -3508,6 +3553,227 @@ window.DB_CRITERIA = {
   });
 
 
+  /* ---------------- 批改区：真题题目选择器（2000—2026） ----------------
+     英语一直接复用本页 DB_EXAMS（大作文 2001—2026、小作文 2005—2026），另补 2000 年大作文；
+     英语二 2010 年首次开考，2010—2026 大小作文按公开真题逐题整理为中文要点转述。
+     事实依据：研招网 2009《英语(二)解密》、研招网 2005 大纲变化说明、
+     MBA大师《英语(二)大作文历年真题汇总 2010—2025》、沈阳华章 / 希赛网 / 懒笔记 2026 原卷整理。
+     不编造不存在的组合：英语二 2000—2009、英语一小作文 2000—2004（会给出说明而非造题）。 */
+  const PP_E1_2000 = {
+    subject:"1", year:2000, scope:"big", type:"图画·双图", topic:"世界商业捕鱼简史",
+    prompt:"A Brief History of World Commercial Fishing：两幅图对比 1900 年与 1995 年——1900 年海里鱼很多、只有一艘渔船；1995 年渔船成群、鱼只剩一条。",
+    src:"研招网 2000 年真题解析 / 中国教育在线"
+  };
+  /* 英语一题面英文原文（2000—2026）。
+     A 档 2010—2026：来自按卷面逐字排印的公开整理页，逐年用词差异（drawing/picture、
+        explain/interpret/intended/implied、160-200 words 位置、ANSWER SHEET 是否带 2）全部保留，
+        只做以下可追溯的排版规范化：① 全角编号 1）2）3）→ 1) 2) 3)；② 弯引号 → 直引号；
+        ③ 连续多余空格压成一个；④ 标点前空格删除；⑤ 订正 3 处明显录入错字：
+        2016 大作文 "l) describe" → "1) describe"；2020 小作文 "White a notice" → "Write a notice"；
+        2014 小作文等多处不换行空格。未改动任何实质措辞。
+     B 档 2000—2009：早年题面各公开来源措辞互相有出入（例如 2000 年至少 4 个版本），
+        此处采用逐条记录来源的公开流传版本，仅作题面文本使用。
+     说明：题面文字会原样填入题目框，作为 AI 批改的题目依据；src/url/tier 字段仅留在
+        代码里备查，不展示、也不写进题目框。 */
+  const PP_E1_EN = {
+    "2000|big": {"dir": "76. Directions:\n[A] Study the following two pictures carefully and write an essay of at least 150 words.\n[B] Your essay must be written neatly on ANSWER SHEET 2. (15 points)\n[C] Your essay should meet the requirements below:\n1. Describe the pictures.\n2. Deduce the purpose of the drawer in the pictures.\n3. Suggest counter measures.", "src": "中国教育在线 · 2000 年全国硕士研究生入学考试英语试题（Section V Writing）", "url": "https://kaoyan.eol.cn/english_3946/20091113/t20091113_421036_10.shtml", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2001|big": {"dir": "Directions: Among all the worthy feelings of mankind, love is probably the noblest, but everyone has his or her own understanding of it. There has been a discussion recently on the issue in a newspaper. Write an essay to the newspaper to\n1) Show your understanding of the symbolic meaning of the pictures below,\n2) Give a specific example, and\n3) Give your suggestion as to the best way to show love.\nYou should write about 200 words neatly on ANSWER SHEET 2.", "src": "新东方《考研英语写作分册》历年题面辑录", "url": "https://blog.sina.com.cn/s/blog_49b0c6f20100cmsm.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2002|big": {"dir": "Directions: Study the following picture carefully and write an essay entitled \"Cultures --- National and International\". In the essay you should\n1) describe the picture and interpret its meaning, and\n2) give your comment on the phenomenon.\nYou should write about 200 words neatly on ANSWER SHEET 2. (20 points)", "src": "考研帮 · 2002 年考研英语作文真题", "url": "https://m.kaoyan.com/www/english/writing/2013-07-13/490061/", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2003|big": {"dir": "Directions: Study the following set of drawings carefully and write an essay in which you should\n1) describe the set of drawings and interpret its meaning, and\n2) point out its implications in our life.\nYou should write about 200 words neatly on ANSWER SHEET 2.", "src": "新东方《考研英语写作分册》历年题面辑录", "url": "https://blog.sina.com.cn/s/blog_49b0c6f20100cmsm.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2004|big": {"dir": "Directions: Study the following drawing carefully and write an essay in which you should\n1) describe the drawing,\n2) interpret its meaning, and\n3) support your view with examples.\nYou should write about 200 words neatly on ANSWER SHEET 2.", "src": "新东方《考研英语写作分册》历年题面辑录", "url": "https://blog.sina.com.cn/s/blog_49b0c6f20100cmsm.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2005|big": {"dir": "Directions: Write an essay of 160-200 words based on the following drawing. In your essay, you should first describe the drawing, then interpret its meaning, and give your comment on it.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "中国研究生招生信息网 · 2005 年英语一大作文真题再现", "url": "https://yz.chsi.com.cn/kyzx/en/201412/20141210/1413969890.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2005|small": {"dir": "51. Directions: Two months ago you got a job as an editor for the magazine Designs & Fashions. But now you find that the work is not what you expected. You decide to quit. Write a letter to your boss, Mr. Wang, telling him your decision, stating your reason(s), and making an apology.\nWrite your letter with no less than 100 words. Write it neatly on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter; use \"Li Ming\" instead. You do not need to write the address. (10 points)", "src": "中国研究生招生信息网 · 英语一小作文历年真题汇总", "url": "https://yz.chsi.com.cn/kyzx/en/201312/20131218/689327552.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入", "cross": "http://www.qihang.cn/info/42002.html"},
+    "2006|big": {"dir": "Directions: Study the following photos carefully and write an essay of 160-200 words in which you should\n1) describe the photos briefly,\n2) interpret the social phenomenon reflected by them, and\n3) give your point of view.\nYou should write 160-200 words neatly on ANSWER SHEET 2. (20 points)", "src": "新东方考研网 · 2006 年考研英语作文真题", "url": "https://kaoyan.xdf.cn/201611/10570052.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2006|small": {"dir": "51. Directions: You want to contribute to Project Hope by offering financial aid to a child in a remote area. Write a letter to the department concerned, asking them to help find a candidate. You should specify what kind of child you want to help and how you will carry out your plan.\nWrite your letter with no less than 100 words. Write it neatly on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter; use \"Li Ming\" instead. You do not need to write the address. (10 points)", "src": "中国研究生招生信息网 · 英语一小作文历年真题汇总", "url": "https://yz.chsi.com.cn/kyzx/en/201312/20131218/689327552.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入", "cross": "http://www.qihang.cn/info/42002.html"},
+    "2007|big": {"dir": "Directions: Write an essay of 160-200 words based on the following drawing. In your essay, you should\n1) describe the drawing briefly,\n2) explain its extended meaning, and then\n3) support your view with an example/examples.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "中国研究生招生信息网（转载新东方）· 2007 年写作真题解析", "url": "https://yz.chsi.com.cn/kyzx/jyxd/200701/20070124/748807.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2007|small": {"dir": "51. Directions: Write a letter to your university library, making suggestions for improving its service.\nYou should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter. Use \"Li Ming\" instead. Do not write the address. (10 points)", "src": "中国研究生招生信息网 · 英语一小作文历年真题汇总", "url": "https://yz.chsi.com.cn/kyzx/en/201312/20131218/689327552.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入", "cross": "http://www.qihang.cn/info/42002.html"},
+    "2008|big": {"dir": "Directions: Write an essay of 160-200 words based on the following drawing. In your essay, you should\n1) describe the drawing briefly,\n2) explain its intended meaning, and then\n3) give your comments.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "新东方考研网 · 2008 年考研英语作文真题", "url": "https://kaoyan.xdf.cn/201611/10570046.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2008|small": {"dir": "Part A\n51. Directions: You have just come back from Canada and found a music CD in your luggage that you forgot to return to Bob, your landlord there. Write him a letter to\n1) make an apology, and\n2) suggest a solution.\nYou should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter. Use \"Li Ming\" instead. Do not write the address. (10 points)", "src": "中国研究生招生信息网 · 英语一小作文历年真题汇总", "url": "https://yz.chsi.com.cn/kyzx/en/201312/20131218/689327552.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入", "cross": "http://www.qihang.cn/info/42002.html"},
+    "2009|big": {"dir": "Directions: Write an essay of 160-200 words based on the following drawing. In your essay, you should\n1) describe the drawing briefly,\n2) explain its intended meaning, and then\n3) give your comments.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "考研英语真题汇编（2002—2011 大作文题面汇总）", "url": "https://wenku.baidu.com/view/bc232933940590c69ec3d5bbfd0a79563c1ed4cc.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入"},
+    "2009|small": {"dir": "51. Directions: Restrictions on the use of plastic bags have not been so successful in some regions. \"White pollution\" is still going on. Write a letter to the editor(s) of your local newspaper to\n1) give your opinions briefly, and\n2) make two or three suggestions.\nYou should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter. Use \"Li Ming\" instead. You do not need to write the address. (10 points)", "src": "中国研究生招生信息网 · 英语一小作文历年真题汇总", "url": "https://yz.chsi.com.cn/kyzx/en/201312/20131218/689327552.html", "tier": "B", "tierText": "早年公开流传版 · 各来源措辞有出入", "cross": "http://www.qihang.cn/info/42002.html"},
+    "2010|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following drawing. In your essay, you should\n1)describe the drawing briefly,\n2)explain its intended meaning, and\n3)give your comments.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2010-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2010|small": {"dir": "Directions:\nYou are supposed to write for the Postgraduates' Association a notice to recruit volunteers for an international conference on globalization. The notice should include the basic qualifications for applicants and the other information which you think is relevant.\nYou should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the notice. Use “Postgraduates' Association” instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2010-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2011|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following drawing. In your essay, you should\n1)describe the drawing briefly,\n2)explain its intended meaning, and\n3)give your comments.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2011-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2011|small": {"dir": "Directions:\nWrite a letter to a friend of yours to\n1)recommend one of your favorite movies and\n2)give reasons for your recommendation.\nYou should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter, use “Li Ming ” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2011-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2012|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following drawing. In your essay you should\n1)describe the drawing briefly\n2)explain its intended meaning, and\n3)give your comments.\nYou should write neatly on ANSWER SHEET 2. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2012-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2012|small": {"dir": "Directions:\nSome international students are coming to your university. Write them an email in the name of the Students' Union to\n1)extend your welcome and\n2)provide some suggestions for their campus life here. You should write about 100 words on ANSWER SHEET 2.\nDo not sign your own name at the end of the letter, use “Li Ming ” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2012-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2013|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following drawing. In your essay, you should\n1)describe the drawing briefly,\n2)interpret its intended meaning, and\n3)give your comments.\nYou should write neatly on ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2013-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2013|small": {"dir": "Directions:\nWrite an e-mail of about 100 words to a foreign teacher in your college, inviting him/her to be a judge for the upcoming English speech contest.\nYou should include the details you think necessary. You should write neatly on ANSWER SHEET.\nDo not sign your own name at the end of the letter, use “Li Ming ” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2013-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2014|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following drawing. In your essay, you should\n1)describe the drawing briefly,\n2)interpret its intended meaning, and\n3)give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2014-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2014|small": {"dir": "Directions:\nWrite a letter of about 100 words to the president of your university, suggesting how to improve students' physical condition.\nYou should include the details you think necessary. You should write neatly on the ANSWER SHEET.\nDo not sign your own name at the end of the letter, use “Li Ming ” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2014-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2015|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following picture. In your essay, you should\n1)describe the picture briefly,\n2)interpret its intended meaning, and 3)give your comments.\nYou should write neatly on ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2015-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2015|small": {"dir": "Directions:\nYou are going to host a club reading session. Write an email of about 100 words recommending a book to the club members.\nYou should state reasons for your recommendation. You should write neatly on the ANSWER SHEET.\nDo not sign your own name at the end of the letter, use “Li Ming ” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2015-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2016|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following pictures. In your essay, you should\n1) describe the pictures briefly,\n2)interpret the meaning, and\n3)give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2016-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2016|small": {"dir": "Directions:\nSuppose you are a librarian in your university. Write a notice of about 100 words, providing the newly-enrolled international students with relevant information about the library.\nYou should write neatly on the ANSWER SHEET.\nDo not sign your own name at the end of the notice. Use “Li Ming” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2016-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2017|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the following pictures. In your essay, you should\n1)describe the pictures briefly,\n2)interpret the meaning, and 3)give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2017-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2017|small": {"dir": "Directions:\nYou are to write an email to James Cook, a newly-arrived Australian professor, recommending some tourist attractions in your city. Please give reasons for your recommendation.\nYou should write neatly on the ANSWER SHEET.\nDo not sign your own name at the end of the email. Use “Li Ming” instead.\nDo not write the address. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2017-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2018|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the picture below. In your essay, you should\n1)describe the picture briefly,\n2)interpret the meaning, and\n3)give your comments.\nYou should write neatly on the ANSWER SHEET.（20 points）", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2018-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2018|small": {"dir": "Directions:\nWrite an email to all international experts on campus inviting them to attend the graduation ceremony. In your email you should include time, place and other relevant information about the ceremony.\nYou should write about 100 words neatly on the ANSWER SHEET.\nDo not use your own name at the end of the email. Use “Li Ming” instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2018-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2019|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the picture below. In your essay, you should\n1)describe the picture briefly,\n2)interpret the implied meaning, and\n3)give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2019-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2019|small": {"dir": "Directions:\nSuppose you are working for the “Aiding Rural Primary School” project of your university. Write an email to answer the inquiry from an international student volunteer, specifying the details of the project.\nYou should write about 100 words on the ANSWER SHEET.\nDo not use your own name in the email. Use “Li Ming” instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2019-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2020|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the picture below. In your essay, you should\n1)describe the picture briefly,\n2)interpret the implied meaning, and\n3)give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2020-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2020|small": {"dir": "Directions:\nThe Students Union of your university has assigned you to inform the international students about an upcoming singing contest. Write a notice in about 100 words.\nWrite your answer on the ANSWER SHEET.\nDo not use your own name in the notice. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2020-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2021|big": {"dir": "Directions:\nWrite an essay of 160 - 200 words based on the following picture. In your essay, you should\n1) describe the picture briefly,\n2) interpret its intended meaning, and\n3) give your comments.\nYou should write neatly on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2021-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2021|small": {"dir": "Directions:\nA foreign friend of yours has recently graduated from college and intends to find a\njob in China. Write him/her an email to make some suggestions.\nYou should write about 100 words on the ANSWER SHEET.\nDo not sign your own name at the end. Use “Li Ming” instead.\nDo not write the address. ( 10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2021-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2022|big": {"dir": "Directions:\nWrite an essay of 160-200 words based on the picture below. In your essay, you should\n1) describe the picture briefly,\n2) explain its intended meaning, and\n3) give your comments.\nYou should write neatly on the ANSWER SHEET. ( 20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2022-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2022|small": {"dir": "Directions:\n Write an email to a professor at a British university, inviting him/her to organize a team for the international innovation contest to be held at your university.\n You should write about 100 words on the ANSWER SHEET.\n Do not use your own name. Use “Li Ming” instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2022-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2023|big": {"dir": "Directions:\nWrite an essay based on the picture below. In your essay, you should\n1) describe the picture briefly,\n2) interpret the implied meaning, and\n3) give your comments.\nWrite your answer in 160-200 words on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2023-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2023|small": {"dir": "Directions:\nWrite a notice to recruit a student for Prof. Smith's research project on campus sports activities. Specify the duties and requirements of the job.\nWrite your answer in about 100 words on the ANSWER SHEET.\nDo not use your own name in the notice; use “Li Ming” instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2023-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2024|big": {"dir": "Directions:\nWrite an essay based on the picture and the chart below. In your essay, you should\n1) describe the picture and the chart briefly,\n2) interpret the implied meaning, and\n3) give your comments.\nWrite your answer in 160-200 words on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2024-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2024|small": {"dir": "Directions:\nRead the following email from an international student and write a reply.\n---\nDear Li Ming,\nI've got a class assignment to make an oral report on an ancient Chinese scientist, but I'm not sure how to prepare for it. Can you give me some advice? Thank you for your help.\n\nYours,\nPaul\n---\nWrite your answer in about 100 words on the ANSWER SHEET.\nDo not use your own name in your email; use\"Li Ming\" instead.(10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2024-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2025|big": {"dir": "Directions:\nWrite an essay based on the table below. In your essay, you should\n1) describe the table briefly,\n2) interpret the table, and\n3) give your comments.\n\nWrite your answer in 160-200 words on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2025-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2025|small": {"dir": "Directions:\nRead the following email from your classmate Paul and write him a reply.\n---\nDear Li Ming,\nI was really excited to hear that you'd invite some young craftsmen to demonstrate their innovative craft-making on campus. May I know more about what they'll show? Also, I'd like to help with your preparation work. Please let me know what I can do.\n\nYours,\nPaul\n---\nWrite your answer in about 100 words on the ANSWER SHEET.\nDo not use your own name in your email; use\"Li Ming\" instead.(10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2025-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2026|big": {"dir": "Directions:\nWrite an essay based on the charts below. In your essay, you should\n1) describe the charts briefly,\n2) interpret the charts, and\n3) give your comments.\n\nWrite your answer in 160-200 words on the ANSWER SHEET. (20 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2026-english-one/section3-part-b/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+    "2026|small": {"dir": "Directions:\nRead the following email from your friend Paul and write him a reply.\n---\nHi Li Ming, \nI was really moved by the Chinese families' handwritten letters you posted yesterday. They are priceless! Could you please tell me a bit more about them? And are they currently on public display somewhere? I'm very keen to see them in person. Thanks. \n\nYours, \nPaul \n---\nYou should write about 100 words on the ANSWER SHEET. \nDo not use your own name in the email; use \"Li Ming\" instead. (10 points)", "src": "懒笔记 · 英语一真题按卷面整理", "url": "https://english-exam.lazynote.cn/kaoyan/sections/2026-english-one/section3-part-a/", "tier": "A", "tierText": "公开整理版 · 按卷面逐字排印"},
+  };
+
+  /* [年份, 题型, 主题, 中文要点转述] */
+  const PP_E2_BIG = [
+    [2010,"柱状图·动态","发达国家与发展中国家手机用户量","柱状图展示 2000—2008 年发展中国家与发达国家手机用户/订阅量变化：发展中国家持续快速上升，发达国家增长较缓。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2011,"柱状图·动态","国内轿车市场品牌份额","柱状图展示 2008、2009 年国内轿车市场部分品牌（国产、日系、美系）市场份额。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2012,"表格·静态","某公司员工工作满意度调查","表格展示某公司不同年龄段员工工作满意度调查结果。要求：描述并解释表格、给出评论，约 150 词。"],
+    [2013,"柱状图·静态","某高校学生兼职情况","柱状图展示某高校大一至大四学生兼职比例。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2014,"柱状图·动态","中国城镇与乡村人口变化","柱状图展示 1990—2010 年（20 年间）中国城镇人口与乡村人口变化。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2015,"饼图·静态","居民春节假期花销比例","饼图展示我国某市居民春节假期花销比例。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2016,"饼图·静态","高校学生旅游目的调查","饼图展示某高校学生旅游目的调查结果。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2017,"折线图·动态","博物馆数量与参观人数","折线图展示 2013—2015 年我国博物馆数量和参观人数变化。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2018,"饼图·静态","消费者选择餐厅的关注因素","饼图展示 2017 年某市消费者选择餐厅时的关注因素（特色、环境、服务、价格等）占比。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2019,"柱状图·动态","本科毕业生去向统计","柱状图对比某高校 2013 年与 2018 年本科毕业生去向（就业、升学、出国等）。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2020,"饼图·静态","学生手机阅读目的调查","饼图展示某高校学生手机阅读目的调查结果。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2021,"柱状图·静态","居民体育锻炼方式调查","柱状图展示某市居民体育锻炼方式调查结果。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2022,"柱状图·动态","我国快递业务量变化","柱状图展示 2018—2020 年我国快递业务量变化情况。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2023,"折线图·动态","居民健康素养水平","折线图展示 2012—2021 年我国居民健康素养水平变化。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2024,"柱状图·静态","劳动实践课学生收获调查","柱状图展示某高校劳动实践课学生主要收获调查结果。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2025,"柱状图·静态","社区老年人休闲活动调查","柱状图展示某社区老年人主要日常休闲活动调查结果。要求：描述并解释图表、给出评论，约 150 词。"],
+    [2026,"柱状图·静态","儿童户外活动看法调查","柱状图展示「某项关于儿童户外活动看法的调查」：满足好奇心 54.6%、促进观察力 54.5%、强身健体 37.2%、增强亲子互动 33.2%。要求：描述并解释图表、给出评论，约 150 词。"]
+  ];
+  const PP_E2_SMALL = [
+    [2010,"感谢+邀请信","感谢接待并邀请来华","你作为中美文化交流项目成员刚从美国回来，给美国同事写信：1) 感谢其热情接待；2) 邀请对方方便时来中国访问。约 100 词，署名 Li Ming，不写地址。"],
+    [2011,"祝贺+建议信","祝贺表弟升学","表弟 Li Ming 刚被大学录取，写信：1) 表示祝贺；2) 就如何准备大学生活给出建议。约 100 词，署名 Li Ming，不写地址。"],
+    [2012,"投诉信","投诉电子词典故障","你网购的电子词典有故障，给客服中心写邮件：1) 投诉问题；2) 要求尽快解决。约 100 词，署名 Li Ming，不写地址。"],
+    [2013,"介绍+邀请信","慈善义卖活动","班级将为需要帮助的儿童举办慈善义卖，给同学写邮件：1) 告知活动细节；2) 鼓励大家参加。约 100 词，署名 Li Ming，不写地址。"],
+    [2014,"介绍+咨询信","给未来室友写信","你将出国留学并与当地学生 John 合住公寓，写信：1) 告知自己的生活习惯；2) 询问在当地生活的建议。约 100 词，署名 Li Ming，不写地址。"],
+    [2015,"通知","夏令营招募志愿者","大学将为中学生举办夏令营，写一则通知：1) 简要介绍夏令营活动；2) 招募志愿者。约 100 词，不写本人姓名与校名。"],
+    [2016,"感谢+建议信","回复翻译比赛祝贺","你在翻译比赛获奖，朋友 Jack 来信祝贺并请教翻译，写回信：1) 致谢；2) 给出翻译学习建议。约 100 词，署名 Li Ming，不写地址。"],
+    [2017,"回复邀请信","中国文化报告邀请","Williams 教授邀请你给留学生做中国文化报告，写回信：1) 接受邀请；2) 介绍报告要点。约 100 词，署名 Li Ming，不写地址。"],
+    [2018,"道歉+邀请信","取消拜访致歉","你不得不取消旅行计划、无法拜访 Smith 教授，写邮件：1) 致歉并说明情况；2) 建议另约见面。约 100 词，署名 Li Ming，不写地址。"],
+    [2019,"建议+介绍信","城市交通辩论选题","Smith 教授让你策划一场以城市交通为主题的辩论，写邮件：1) 推荐一个具体话题并说明理由；2) 告知你的安排。约 100 词，署名 Li Ming，不写地址。"],
+    [2020,"介绍+建议信","历史名胜游览","你为留学生安排参观一处历史名胜，写邮件：1) 介绍该景点；2) 给出出游建议。约 100 词，署名 Li Ming，不写地址。"],
+    [2021,"邀请+介绍信","邀请参加线上会议","你在组织一场线上会议，给留学生 Jack 写邮件：1) 邀请他参加；2) 告知会议细节。约 100 词，署名 Li Ming，不写地址。"],
+    [2022,"介绍+邀请信","校园美食节","你正筹办校园美食节，给校内留学生写邮件：1) 介绍美食节；2) 邀请他们参加。约 100 词，署名 Li Ming，不写地址。"],
+    [2023,"建议信","艺术展还是机器人展","周日有艺术展和机器人展，朋友 David 问该去哪个，写邮件：1) 给出建议；2) 说明理由。约 100 词，署名 Li Ming，不写地址。"],
+    [2024,"建议+咨询信","古镇老房子保护调查","你和 Jack 将就古镇老房子保护做调查，写邮件：1) 提出你的计划；2) 询问他的看法。约 100 词，署名 Li Ming，不写地址。"],
+    [2025,"介绍+邀请信","中国古典小说改编短剧","你打算把一部中国古典小说改编成短剧，给朋友 John 写邮件：1) 介绍短剧；2) 邀请他参演。约 100 词，署名 Li Ming，不写地址。"],
+    [2026,"介绍+咨询信","友人分享中国旅行视频","朋友 Jack 分享了他一家在中国旅行的视频，写邮件：1) 谈谈你看完后的感受；2) 表达想了解更多旅行细节的愿望。约 100 词，署名 Li Ming，不写地址。"]
+  ];
+  function ppBank() {
+    const bank = [];
+    const attach = (o) => {
+      const en = PP_E1_EN[o.year + "|" + o.scope] || null;
+      o.en = en ? en.dir : "";
+      o.enMeta = en || null;
+      o.hasEn = !!en;
+      return o;
+    };
+    /* 只保留客观的画面/情景描述，不把 points（写作立意建议）拼进来——
+       那是本页给拼装台用的思路，不是题目要求，混进批改依据会让模型误判切题。 */
+    (window.DB_EXAMS || []).forEach(e => bank.push(attach({
+      subject:"1", year:Number(e.year), scope:e.scope, type:e.type, topic:e.topic,
+      prompt:(e.prompt || ""),
+      src:"本页 02 真题库"
+    })));
+    bank.push(attach(Object.assign({}, PP_E1_2000, { src:PP_E1_2000.src })));
+    PP_E2_BIG.forEach(r => bank.push({ subject:"2", year:r[0], scope:"big", type:r[1], topic:r[2], prompt:r[3], src:"公开真题汇总", hasEn:false, en:"", enMeta:null }));
+    PP_E2_SMALL.forEach(r => bank.push({ subject:"2", year:r[0], scope:"small", type:r[1], topic:r[2], prompt:r[3], src:"公开真题汇总", hasEn:false, en:"", enMeta:null }));
+    return bank;
+  }
+  const PP_BANK = ppBank();
+  /* 只读暴露，便于在控制台查看覆盖情况；不参与页面逻辑 */
+  window.KY_PROMPT_BANK = PP_BANK;
+  const ppFind = (subject, year, scope) => PP_BANK.find(x => x.subject === subject && x.year === Number(year) && x.scope === scope) || null;
+
+  /* 题目框内容会原样发给批改模型，只放「题目信息」，不放任何给人看的核对声明、
+     来源链接、等级徽标或配图地址——那些都会占用并污染 AI 的切题判断。
+     英语一：英文 Directions 原文；大作文另附图画/图表内容描述（AI 看不到图，必须有文字）。
+     英语二：暂为中文要点转述。 */
+  function ppText(it) {
+    const sub = it.subject === "1" ? "英语一" : "英语二";
+    const sc = it.scope === "big" ? "大作文" : "小作文";
+    const head = `【${it.year} ${sub} · ${sc}】${it.type || ""}${it.topic ? " · " + it.topic : ""}`;
+    if (it.hasEn && it.en) {
+      const fig = (it.scope === "big" && it.prompt) ? "\n\n〔图画 / 图表内容〕\n" + it.prompt : "";
+      return head + "\n\n" + it.en + fig;
+    }
+    return head + "\n\n" + it.prompt;
+  }
+  function ppExplain(subject, year, scope) {
+    if (subject === "2" && year < 2010)
+      return "英语二 2010 年才首次开考（研招网 2009 年大纲说明）；2000—2009 是不分卷旧卷，没有英语二试卷。可改选 2010 年以后，或切回英语一。";
+    if (subject === "1" && scope === "small" && year < 2005)
+      return "考研英语 2005 年大纲才新增小作文（应用文）；2000—2004 只考一篇大作文。可改选 2005 年以后，或切到大作文。";
+    return "这一年份 / 题型没有收录到题目，请手动粘贴原题。";
+  }
+  function initPromptPicker() {
+    const sub = $("#ppSubject"), yr = $("#ppYear"), sc = $("#ppScope");
+    const info = $("#ppInfo"), ta = $("#gradePrompt"), btn = $("#ppManual");
+    if (!sub || !yr || !sc || !info || !ta || !btn) return;
+    const years = [];
+    for (let y = 2026; y >= 2000; y--) years.push(y);
+    yr.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
+    const state = { manual:false };
+    try {
+      const saved = JSON.parse(store.get("ky-grade-pp") || "null");
+      if (saved && saved.s && saved.y && saved.c) { sub.value = saved.s; yr.value = String(saved.y); sc.value = saved.c; }
+    } catch (e) {}
+    const label = it => `${it.year} ${it.subject === "1" ? "英语一" : "英语二"} · ${it.scope === "big" ? "大作文" : "小作文"}`;
+    const show = (html, cls) => { info.className = "pp-info" + (cls ? " " + cls : ""); info.innerHTML = html; };
+    function apply(overwrite) {
+      if (state.manual) return;
+      const it = ppFind(sub.value, yr.value, sc.value);
+      if (!it) {
+        show(esc(ppExplain(sub.value, Number(yr.value), sc.value)) + "<br>下方题目框保持原样，不会被覆盖。", "pp-warn");
+        return;
+      }
+      if (overwrite || !ta.value.trim()) ta.value = ppText(it);
+      const edited = ta.value !== ppText(it);
+      show(`<span class="pp-tag">已选</span> ${esc(label(it))} · ${esc(it.type || "")} · <b>${esc(it.topic || "")}</b>`
+        + (edited ? `<div class="pp-edit">题目框已被手动改写，批改按你改写后的内容判断切题；点「↩ 从真题选」可恢复。</div>`
+                  : `<div class="pp-edit">题目已填入下方题目框，会原样发给 AI 作为批改依据，可直接改写。</div>`),
+        edited ? "pp-custom" : "");
+    }
+    [sub, yr, sc].forEach(el => el.addEventListener("change", () => {
+      store.set("ky-grade-pp", JSON.stringify({ s:sub.value, y:yr.value, c:sc.value }));
+      apply(true);
+    }));
+    ta.addEventListener("input", () => {
+      if (state.manual) return;
+      const it = ppFind(sub.value, yr.value, sc.value);
+      if (!it) return;
+      if (ta.value !== ppText(it))
+        show(`<span class="pp-tag">已手动改写</span> ${esc(label(it))}`
+          + `<div class="pp-edit">批改将按题目框里你改写后的内容判断切题；点「↩ 从真题选」可恢复。</div>`, "pp-custom");
+      else apply(false);
+    });
+    btn.addEventListener("click", () => {
+      state.manual = !state.manual;
+      [sub, yr, sc].forEach(el => { el.disabled = state.manual; });
+      if (state.manual) {
+        ta.value = "";
+        btn.textContent = "↩ 从真题选";
+        show("自定义题目模式：直接在下方题目框粘贴或手写原题，批改会按你写的内容判断切题。", "pp-custom");
+        ta.focus();
+      } else {
+        btn.textContent = "自己写 / 清空题目";
+        apply(true);
+      }
+    });
+    const clear = $("#gradeClear");
+    if (clear) clear.addEventListener("click", () => {
+      if (!state.manual) show("题目框已清空。重新选一次年份 / 题型即可再次自动填入，或直接手动粘贴原题。", "pp-custom");
+    });
+    apply(false);
+  }
+
   /* ---------------- grading ---------------- */
   const API_DEFAULT_BASE = "https://api.deepseek.com";
   const API_DEFAULT_MODEL = "deepseek-flash";
@@ -3535,8 +3801,10 @@ window.DB_CRITERIA = {
     { g:"腾讯混元", id:"hunyuan-turbos", label:"混元 · hunyuan-turbos-latest", base:"https://api.hunyuan.cloud.tencent.com/v1", model:"hunyuan-turbos-latest" },
     { g:"腾讯混元", id:"hy3", label:"混元 TokenHub · hy3（长文本）", base:"https://tokenhub.tencentcloudmaas.com/v1", model:"hy3" },
     { g:"硅基流动 SiliconFlow", id:"siliconflow-dsv4", label:"硅基流动 · DeepSeek-V4-Flash", base:"https://api.siliconflow.cn/v1", model:"deepseek-ai/DeepSeek-V4-Flash", note:"一个 Key 可调多家开源模型，模型 ID 以控制台列表为准。" },
-    { g:"OpenAI", id:"gpt-4o-mini", label:"OpenAI · gpt-4o-mini", base:"https://api.openai.com/v1", model:"gpt-4o-mini", note:"模型名以你账户实际可用列表为准。" },
-    { g:"OpenAI", id:"gpt-4o", label:"OpenAI · gpt-4o", base:"https://api.openai.com/v1", model:"gpt-4o" },
+    { g:"OpenAI", id:"gpt-6-astra", label:"OpenAI · gpt-6-astra（GPT-6 旗舰）", base:"https://api.openai.com/v1", model:"gpt-6-astra", note:"2026 年 GPT-6 系列，官方主推 Responses API；本页仍走 chat/completions 兼容端点，若报 404/400 说明该端点不可用。" },
+    { g:"OpenAI", id:"gpt-6.1-sol", label:"OpenAI · gpt-6.1-sol（均衡）", base:"https://api.openai.com/v1", model:"gpt-6.1-sol" },
+    { g:"OpenAI", id:"gpt-6.1-terra", label:"OpenAI · gpt-6.1-terra", base:"https://api.openai.com/v1", model:"gpt-6.1-terra" },
+    { g:"OpenAI", id:"gpt-6-luna", label:"OpenAI · gpt-6-luna（最省）", base:"https://api.openai.com/v1", model:"gpt-6-luna", note:"低成本档；模型名与可用端点以你账户的控制台为准。" },
     { g:"自定义", id:"custom", label:"自定义 / 代理网关（自己填模型名与地址）", base:"", model:"", note:"适合自有代理网关、火山方舟（ep- 接入点 ID）、本地 Ollama 等。联网检索仅支持 DeepSeek 官方直连。" }
   ];
   const presetById = (id) => API_PRESETS.find(p => p.id === id) || null;
@@ -3820,7 +4088,13 @@ ${risk}
     const wc = wordCount(text);
     const kind = wc < 130 ? "小作文（约 100 词）" : "大作文（160—200 词）";
     const numbered = sents.map(s => `[${s.i}] ${s.text}`).join("\n");
-    return `【题目/要求】\n${prompt || "（用户未填，请只根据作文本身判断，不要臆造题目细节）"}\n\n【作文类型】${kind}\n\n【原文】\n${text}\n\n【按句编号（请用这里的 index）】\n${numbered}\n\n【词数】${wc}`;
+    return `【题目/要求】\n${prompt || "（用户未填，请只根据作文本身判断，不要臆造题目细节）"}\n\n【题目框的使用规则，务必遵守】
+1. 题目框是本次作文的题目与要求，作为判断切题、字数、要点数量、文体与署名要求的依据。英文 Directions 是题面原文；大作文的〔图画 / 图表内容〕是用文字描述的画面，你无法看到原图。
+2. 画面描述是概括性转述。不要因为作文里的某个细节、数字、台词或人名没有出现在描述里，就判定跑题或事实错误。
+3. 若题目信息不足、无法判断切题，应在 dimensions.content 里说明「题目信息不足，切题判断仅供参考」，不要臆断跑题，也不要脑补题目细节。
+4. 题目框若被用户手动改写，以改写后的内容为准。
+
+【作文类型】${kind}\n\n【原文】\n${text}\n\n【按句编号（请用这里的 index）】\n${numbered}\n\n【词数】${wc}`;
   }
 
   async function callModel(system, user) {
@@ -4049,6 +4323,7 @@ ${risk}
     loadSettings();
     renderPresetOptions();
     updateKeyStatus();
+    initPromptPicker();
 
     const ta = $("#gradeText");
     ta.addEventListener("input", () => {
