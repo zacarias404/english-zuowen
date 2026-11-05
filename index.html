@@ -338,7 +338,20 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 .vocab-item b{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink)}
 .vocab-item span{color:var(--muted)}
 
-/* ---------- grading ---------- */
+.picked{border:1px solid rgba(168,132,63,.38);background:rgba(168,132,63,.06);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.picked-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.picked-head b{font-family:var(--serif);font-size:14px;color:#8a6a2f}
+.picked-head span{font-size:10px;color:var(--muted);margin-left:8px}
+.picked-item{border-top:1px dashed var(--line);padding:8px 0 6px}
+.picked-id{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--gold);margin-bottom:3px}
+.picked-en{font-family:var(--serif);font-size:13px;line-height:1.65}
+.picked-cn{font-size:11px;color:var(--muted);line-height:1.6;margin-top:2px}
+.picked-actions{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.picked-actions button{font-size:10px;padding:2px 8px;border:1px solid var(--line-2);border-radius:6px;background:rgba(255,255,255,.4);color:var(--ink-2)}
+.picked-actions button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.picked-actions button:disabled{opacity:.35;cursor:not-allowed}
+
+
 .rail-settings{width:100%;text-align:left;font-size:12px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;color:var(--ink-2);background:rgba(255,255,255,.4)}
 .rail-settings:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .grade-status{display:flex;align-items:center;gap:8px}
@@ -2466,7 +2479,7 @@ window.DB_CRITERIA = {
     examScope: "big", examType: "全部", examCat: "全部", examYear: "all", examQ: "",
     tplScope: "big", tplPart: "全部", tplGroup: "全部", tplFlag: "all", tplQ: "", tplLimit: 12,
     buildScope: "big", buildType: "图表·静态", buildStyle: "稳妥",
-    planId: null, overrides: {},
+    planId: null, overrides: {}, picked: [],
     critScope: "big",
     upTab: "risk", vocabCat: "动态图",
     wordCat: WORDS.length ? WORDS[0].cat : "",
@@ -2814,7 +2827,7 @@ window.DB_CRITERIA = {
           ${traceHtml(t.trace)}
           ${h ? `<button class="pill-btn alt-btn" data-alt="${t.id}">替代句</button>` : ""}
           <button class="pill-btn" data-copy="${t.id}">复制</button>
-          <button class="pill-btn solid" data-add="${t.id}">拼装</button>
+          <button class="pill-btn solid" data-add="${t.id}">加入拼装</button>
         </div>
         ${h ? `<div class="altbox hidden" data-altbox="${t.id}">
           <div class="altlabel">为什么危险</div><p>${esc(h.why)}</p>
@@ -2951,18 +2964,95 @@ window.DB_CRITERIA = {
     }).filter(Boolean).join("\n\n");
   }
 
+  function pickBuildType(scope, types) {
+    const opts = (BUILD_TYPES[scope] || []).map(o => o[0]);
+    const list = types || [];
+    const direct = opts.find(o => list.includes(o));
+    if (direct) return direct;
+    const alias = { "图表·表格": "图表·动态", "图表·柱状": "图表·动态", "图画·对话": "图画·单图", "辞职信": "道歉信", "通用": "答复信" };
+    for (const t of list) if (alias[t] && opts.includes(alias[t])) return alias[t];
+    return opts[0];
+  }
+
+  function addToBuilder(t) {
+    if (!t) return;
+    // 跨作文类型时清空，避免大作文/小作文混在一起
+    const first = S.picked.length ? TPLS.find(x => x.id === S.picked[0]) : null;
+    if (first && first.scope !== t.scope) S.picked = [];
+    if (S.picked.indexOf(t.id) < 0) S.picked.push(t.id);
+    S.buildScope = t.scope;
+    S.buildStyle = (t.level === "进阶" || t.level === "高阶") ? "进阶" : "稳妥";
+    S.buildType = pickBuildType(t.scope, t.types);
+    $$("#buildScope button").forEach(x => x.classList.toggle("on", x.dataset.scope === S.buildScope));
+    $$("#buildStyle button").forEach(x => x.classList.toggle("on", x.dataset.style === S.buildStyle));
+    const plan = PLANS.find(p => p.scope === t.scope && p.parts.some(x => x.id === t.id));
+    if (plan) S.planId = plan.id;
+    S.overrides = {};
+    renderBuilder();
+    document.getElementById("builder").scrollIntoView({ behavior: "smooth", block: "start" });
+    toast("已加入自定义拼装：" + t.id + "（可在上方调整顺序）");
+  }
+
+  function pickedHtml() {
+    const items = S.picked.map(id => TPLS.find(t => t.id === id)).filter(Boolean);
+    if (!items.length) return "";
+    return `<div class="picked">
+      <div class="picked-head">
+        <div><b>自定义拼装</b><span>已选 ${items.length} 句 · 按顺序拼接</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="pill-btn" id="pickedCopy">复制全部</button>
+          <button class="pill-btn" id="pickedClear">清空</button>
+        </div>
+      </div>
+      ${items.map((t, i) => `<div class="picked-item">
+        <div class="picked-id">${t.id}${t.part ? " · " + esc(t.part) : ""}${t.group ? " · " + esc(t.group) : ""}</div>
+        <div class="picked-en">${fmt(t.en)}</div>
+        <div class="picked-cn">${esc(t.cn)}</div>
+        <div class="picked-actions">
+          <button data-pick-up="${t.id}" ${i === 0 ? "disabled" : ""}>↑</button>
+          <button data-pick-down="${t.id}" ${i === items.length - 1 ? "disabled" : ""}>↓</button>
+          <button data-pick-remove="${t.id}">移除</button>
+        </div>
+      </div>`).join("")}
+    </div>`;
+  }
+
+  function bindPicked(root) {
+    const copy = root.querySelector("#pickedCopy");
+    if (copy) copy.addEventListener("click", () => {
+      const text = S.picked.map(id => (TPLS.find(t => t.id === id) || {}).en || "").filter(Boolean).join("\n\n");
+      copyText(text, "自定义拼装已复制");
+    });
+    const clear = root.querySelector("#pickedClear");
+    if (clear) clear.addEventListener("click", () => { S.picked = []; renderBuilder(); });
+    root.querySelectorAll("[data-pick-remove]").forEach(b => b.addEventListener("click", () => {
+      S.picked = S.picked.filter(id => id !== b.dataset.pickRemove);
+      renderBuilder();
+    }));
+    root.querySelectorAll("[data-pick-up]").forEach(b => b.addEventListener("click", () => {
+      const i = S.picked.indexOf(b.dataset.pickUp);
+      if (i > 0) { [S.picked[i - 1], S.picked[i]] = [S.picked[i], S.picked[i - 1]]; renderBuilder(); }
+    }));
+    root.querySelectorAll("[data-pick-down]").forEach(b => b.addEventListener("click", () => {
+      const i = S.picked.indexOf(b.dataset.pickDown);
+      if (i >= 0 && i < S.picked.length - 1) { [S.picked[i + 1], S.picked[i]] = [S.picked[i], S.picked[i + 1]]; renderBuilder(); }
+    }));
+  }
+
   function renderBuilder() {
     renderBuildTypes();
     const plan = currentPlan();
     const box = $("#composer");
     if (!plan) {
-      box.innerHTML = `<div class="empty">这个题型还没有配置方案。</div>`;
+      box.innerHTML = pickedHtml() + `<div class="empty">这个题型还没有配置方案。</div>`;
+      bindPicked(box);
       return;
     }
     if (!S.planId) S.planId = plan.id;
     const plans = plansFor();
     const tplCount = plan.parts.length;
     box.innerHTML = `
+      ${pickedHtml()}
       <div class="chead">
         <div>
           <h3>${esc(plan.title)}</h3>
@@ -3006,6 +3096,7 @@ window.DB_CRITERIA = {
         <div class="tip">京区提醒：把每个 { } 换成题目里的具体信息；模板句不要超过全文四成。${tplCount >= 5 ? "这段骨架偏长，写的时候删掉一个次要原因。" : ""}</div>
       </div>`;
     const ta = $("#draft");
+    bindPicked(box);
     ta.value = assembled(plan);
     const updateWC = () => {
       const base = wordCount(ta.value);
@@ -3054,7 +3145,7 @@ window.DB_CRITERIA = {
     const b = ev.target.closest("button[data-scope]");
     if (!b) return;
     S.buildScope = b.dataset.scope;
-    S.planId = null; S.overrides = {};
+    S.planId = null; S.overrides = {}; S.picked = [];
     $$("#buildScope button").forEach(x => x.classList.toggle("on", x === b));
     renderBuilder();
   });
