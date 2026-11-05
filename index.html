@@ -545,6 +545,16 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 .pred-cost{font-size:11px;line-height:1.85;color:var(--ink-2);background:rgba(61,90,76,.05);border:1px solid rgba(61,90,76,.16);border-radius:9px;padding:10px 12px;margin-bottom:12px}
 .pred-cost b{color:var(--green)}
 .pred-cost code,.g-error code{font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.65);padding:1px 4px;border-radius:3px}
+.pred-query{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0 2px}
+.pred-query label{font-size:11px;color:var(--ink-2);white-space:nowrap;font-weight:600}
+.pred-query input{flex:1 1 300px;min-width:200px;font-size:11.5px;padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);font-family:inherit}
+.pred-query input:focus{outline:none;border-color:var(--gold)}
+.pred-query .q-hint{font-size:10px;color:var(--muted);line-height:1.6;flex-basis:100%}
+.pred-diag{margin:10px 0 0;font-size:10.5px;line-height:1.8;color:var(--muted);font-family:var(--mono);background:rgba(61,90,76,.04);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.pred-diag b{color:var(--ink-2);font-weight:600}
+.pred-diag .d-ok{color:var(--green)}
+.pred-diag .d-zero{color:#a06a12}
+.pred-diag .d-err{color:var(--red)}
 .src-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:20px 0 9px;border-top:1px solid var(--line);padding-top:14px}
 .src-head h4{font-family:var(--serif);font-size:14px;margin:0}
 .src-head span{font-size:10px;color:var(--muted);font-family:var(--mono)}
@@ -560,7 +570,7 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 .refs{margin-left:6px;white-space:nowrap}
 .src-ref{font-family:var(--mono);font-size:10px;color:var(--blue);border-bottom:1px solid rgba(47,74,99,.3);margin-left:3px}
 .src-ref:hover{color:var(--red);border-color:var(--red)}
-@media(max-width:560px){.src-list{grid-template-columns:1fr}.pred-actions .btn-primary{width:100%}}
+@media(max-width:560px){.src-list{grid-template-columns:1fr}.pred-actions .btn-primary{width:100%}.pred-query input{flex-basis:100%}}
 
 /* ---------- v4: 批改区真题选题器 ---------- */
 .pp-wrap{border:1px solid var(--line);background:rgba(255,255,255,.42);border-radius:10px;padding:12px 14px;margin-bottom:14px}
@@ -982,15 +992,21 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
   <div class="panel" style="padding:22px 24px">
     <div class="sec-title" style="margin-bottom:4px"><h3 style="margin:0">联网检索 + AI 汇总</h3></div>
     <div class="sec-note" style="text-align:left">点「联网检索并汇总」会调用 DeepSeek 官方网页搜索接口真实查当下公开资料，再让模型<b>只依据检索到的页面</b>整理；每条结论都带可点开的来源编号。</div>
+    <div class="pred-query">
+      <label for="predQuery">检索词（可选）</label>
+      <input id="predQuery" type="text" placeholder="留空用内置词；多个词用 | 或换行分隔">
+      <div class="q-hint">内置词<b>不带时间过滤</b>（2027 预测资料多发布于 2026 年，加 after:2026 会把它们全排除）。填自己的词可覆盖内置词；零结果时会自动换更宽的词再试一轮。</div>
+    </div>
     <div class="pred-actions">
       <button class="btn-primary" id="predictRun">联网检索并汇总</button>
       <button class="pill-btn" id="predictLocal">仅 AI 整理（不联网）</button>
       <button class="pill-btn" id="predictClear">清空结果</button>
       <span class="count" id="predictHint">需先在设置里配置 API Key</span>
     </div>
-    <div class="pred-cost"><b>关于联网检索：</b>走 DeepSeek 官方 <code>POST /v1/tools/search</code>（2026-11-05 核对官方文档，已实测浏览器可直连，含本地 <code>file://</code> 打开）。官方计费 5 元 / 1000 次成功请求，一次运行发 4 个检索词 ≈ 0.02 元，再加 1 次对话请求；搜索无结果或失败不计费。抓取正文的 <code>/v1/tools/fetch</code> 本页未启用。</div>
+    <div class="pred-cost"><b>关于联网检索：</b>走 DeepSeek 官方 <code>POST /v1/tools/search</code>（2026-11-05 核对官方文档）。一次运行先发 4 个检索词；若全部无结果，会自动换 4 个更宽的词再试一轮。官方按成功请求计费 5 元 / 1000 次，<b>返回空结果不计费</b>，再加 1 次对话请求。下方会逐个显示每个检索词实际返回几条，方便分清「词太窄」还是「接口异常」。抓取正文的 <code>/v1/tools/fetch</code> 本页未启用。</div>
     <div class="g-disclaimer" style="margin-bottom:0">如实说明：检索拿到的是<b>搜索引擎返回的公开网页</b>，不是命题组信息，也不保证网页内容属实；AI 汇总是模型对这些页面的归纳，仍可能理解错或漏掉。「仅 AI 整理」则是<b>不联网</b>的旧模式，只凭模型训练知识，可能过时或编造人名。凡涉及具体老师、书名、日期，请点开来源回原始页面核实；预测不是真题。</div>
     <div class="pred-result" id="predictResult"></div>
+    <div class="pred-diag" id="predDiag" style="display:none"></div>
     <div id="predSources"></div>
 
     <div class="sec-title" style="margin:18px 0 4px"><h3 style="margin:0;font-size:14px">手动用搜索引擎查（备用）</h3></div>
@@ -1062,7 +1078,7 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
       </div>
 
       <p class="modal-hint" id="apiBaseHint">已实测（2026-11-05）：<b>DeepSeek 官方 API 允许浏览器跨域直连</b>，连本地 <code>file://</code> 打开都能用；其他厂商或自建代理若不开放 CORS，请选「自定义」填自己的代理地址。模型名以各家控制台为准，豆包（火山方舟）通常需填 ep- 开头的接入点 ID。</p>
-      <p class="modal-hint" id="apiSearchHint">选 DeepSeek 官方预设即可启用 09 节的「联网检索」：调用官方 /v1/tools/search 真实查网页，按 5 元 / 1000 次成功请求计费，一次运行约 4 次检索（≈0.02 元）。其他服务商只能用不联网的 AI 整理。</p>
+      <p class="modal-hint" id="apiSearchHint">选 DeepSeek 官方预设即可启用 09 节的「联网检索」：调用官方 /v1/tools/search 真实查网页，按 5 元 / 1000 次成功请求计费（返回空结果不计费）；一次运行 4 个检索词，零结果自动换更宽的词再试一轮。其他服务商只能用不联网的 AI 整理。</p>
       <p class="modal-hint">各平台 Key 获取：DeepSeek platform.deepseek.com、通义百炼 bailian.console.aliyun.com、智谱 open.bigmodel.cn、Kimi platform.moonshot.cn、混元 console.cloud.tencent.com。不要使用他人 Key；公共电脑用完请点“清除 Key”。</p>
     </div>
     <div class="modal-foot">
@@ -4528,15 +4544,23 @@ ${risk}
     ["Bing · 大纲变化", "https://www.bing.com/search?q=" + encodeURIComponent("2027 考研英语一 考试大纲 写作 变化")]
   ];
   /* ---- DeepSeek 官方联网检索（POST /v1/tools/search） ----
-     真实查网页 → 展示带编号的来源 → 让模型只依据这些来源汇总。
      依据 api-docs.deepseek.com/zh-cn/guides/search（2026-11-05 核对）：
-     query 1~128 字符、count 1~50、need_content 返回网页正文；
-     结果含 title/url/snippet/summary/content/site_name/date/authority/rerank_score。 */
+     query 1~128 字符、count 1~50、need_content 返回网页正文，响应为 { results: [] }。
+     重要：不要加 after:2026 —— 2027 考研预测资料几乎都发布于 2026 年
+     （新东方 2026-07、王江涛微博 2026-10 等），after:2026 会把它们全部排除，
+     导致 4 个检索词齐刷刷返回空数组。也不堆多个人名，避免 AND 匹配不到。 */
   const PRED_QUERIES = [
-    "2027 考研英语一 大作文 预测 王江涛 石雷鹏 周思成 after:2026",
-    "2027 考研英语一 大作文 题型 双图表 反模板 趋势 after:2026",
-    "2027 考研英语一 小作文 预测 类型 混合型 after:2026",
-    "2027 考研英语 作文 押题 考前预测 20 篇 after:2026"
+    "2027 考研英语一 作文 预测",
+    "2027 考研英语 大作文 押题 方向",
+    "2027 考研英语一 小作文 预测 题型",
+    "王江涛 2027 考研英语 考前预测20篇"
+  ];
+  /* 第一轮全部无结果时自动换更宽的词重试（不叠加时间过滤、不堆人名） */
+  const PRED_QUERIES_FALLBACK = [
+    "考研英语一 作文 预测 方向",
+    "考研英语 大作文 题型 趋势",
+    "考研英语一 小作文 类型 汇总",
+    "2027 考研英语 作文 押题"
   ];
 
   function hostOf(u) {
@@ -4564,7 +4588,7 @@ ${risk}
       const res = await fetch(DS_SEARCH_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + G.settings.key },
-        body: JSON.stringify({ query: query, count: 6, need_content: true, ori_question: "2027 考研英语一写作有哪些公开预测？" }),
+        body: JSON.stringify({ query: query, count: 8, need_content: true, ori_question: "2027 考研英语一写作有哪些公开预测" }),
         signal: ctrl.signal
       });
       if (!res.ok) {
@@ -4573,11 +4597,35 @@ ${risk}
         throw new Error(dsErrText(res.status, detail));
       }
       const j = await res.json();
-      return Array.isArray(j.results) ? j.results : [];
+      /* 官方响应为 { results: [] }；兼容少数网关把结果包在 data / search_results 里的情况 */
+      const arr = Array.isArray(j.results) ? j.results
+        : Array.isArray(j.data) ? j.data
+        : (j.data && Array.isArray(j.data.results)) ? j.data.results
+        : Array.isArray(j.search_results) ? j.search_results : [];
+      return { query: query, results: arr, shape: Array.isArray(j.results) ? "" : Object.keys(j || {}).join(",") };
     } catch (e) {
       if (e && /abort/i.test(String(e.name || "") + String(e.message || ""))) throw new Error("检索超时（45 秒），稍后重试。");
       throw e;
     } finally { clearTimeout(timer); }
+  }
+  /* 逐词诊断：让用户看到每个检索词到底返回几条，而不是一句笼统的「没有来源」 */
+  function renderDiag(rounds) {
+    const box = $("#predDiag");
+    if (!box) return;
+    box.innerHTML = rounds.map((r, ri) =>
+      `<b>第 ${ri + 1} 轮${r.note ? "（" + esc(r.note) + "）" : ""}</b>` +
+      r.items.map((d, i) => {
+        const cls = d.err ? "d-err" : (d.n > 0 ? "d-ok" : "d-zero");
+        const tail = d.err ? `失败：${esc(d.err)}` : `${d.n} 条${d.shape ? "（响应字段：" + esc(d.shape) + "）" : ""}`;
+        return `<div>[${i + 1}] ${esc(d.q)} → <span class="${cls}">${tail}</span></div>`;
+      }).join("")
+    ).join("");
+    box.style.display = "block";
+  }
+  function customQueries() {
+    const el = $("#predQuery");
+    const raw = el ? el.value : "";
+    return raw.split(/[|\n；;]+/).map(x => x.trim()).filter(Boolean).slice(0, 6).map(x => x.slice(0, 128));
   }
   function collectSources(list) {
     const seen = new Set(), out = [];
@@ -4623,11 +4671,11 @@ ${risk}
 4. 覆盖大作文题型与主题、小作文类型；给出多家共识与备考优先级（落到图表首段、图画保底、小作文格式、主题词）。
 5. 只输出 JSON，不要 markdown 代码块，不要额外解释。结构：
 {"asOf":"信息时效说明","items":[{"who":"","type":"","topics":[],"note":"","refs":[1,2]}],"consensus":[{"text":"","refs":[1,2]}],"priorities":[],"caveat":"必须写的免责说明"}`;
-  function buildWebUser(sources) {
+  function buildWebUser(sources, queries) {
     const mat = sources.map(s =>
       `[${s.n}] ${s.title}\n站点：${s.site}${s.date ? " / " + s.date : ""}\n链接：${s.url}\n内容：${s.body}`
     ).join("\n\n---\n\n");
-    return `【检索时间】${new Date().toLocaleString("zh-CN")}\n【检索词】${PRED_QUERIES.join(" ｜ ")}\n\n【联网检索到的网页素材（共 ${sources.length} 条）】\n${mat}\n\n请只依据以上素材整理 2027 考研英语（一）写作的公开预测方向，输出指定 JSON。`;
+    return `【检索时间】${new Date().toLocaleString("zh-CN")}\n【检索词】${(queries || PRED_QUERIES).join(" ｜ ")}\n\n【联网检索到的网页素材（共 ${sources.length} 条）】\n${mat}\n\n请只依据以上素材整理 2027 考研英语（一）写作的公开预测方向，输出指定 JSON。`;
   }
 
   const PREDICT_SYSTEM = `你是考研英语写作资料整理助手，任务是整理「2027 考研英语（一）写作」的公开预测方向。
@@ -4727,6 +4775,7 @@ ${risk}
     if (!G.settings.key) { toast("先在设置里配置 API Key"); openSettings(); return; }
     if (!searchCapable()) {
       $("#predSources").innerHTML = "";
+      const dg = $("#predDiag"); if (dg) { dg.innerHTML = ""; dg.style.display = "none"; }
       predError("当前预设不支持联网检索", "联网检索走 DeepSeek 官方 /v1/tools/search，需要在设置里选 DeepSeek 官方预设（deepseek-flash / deepseek-v4-pro）并使用官方 API Base。其他服务商请用「仅 AI 整理」或下方搜索引擎链接。");
       return;
     }
@@ -4735,23 +4784,53 @@ ${risk}
     const btn = $("#predictRun"), btn2 = $("#predictLocal");
     btn.disabled = true; btn2.disabled = true;
     $("#predSources").innerHTML = "";
+    const dg = $("#predDiag"); if (dg) { dg.innerHTML = ""; dg.style.display = "none"; }
     $("#predictHint").textContent = "正在联网检索…";
-    $("#predictResult").innerHTML = `<div class="g-loading"><div class="spinner"></div><span id="predProgress">正在调用 DeepSeek 网页搜索（${PRED_QUERIES.length} 个检索词）…</span></div>`;
+    $("#predictResult").innerHTML = `<div class="g-loading"><div class="spinner"></div><span id="predProgress">正在调用 DeepSeek 网页搜索…</span></div>`;
+
+    const custom = customQueries();
+    const first = custom.length ? custom : PRED_QUERIES;
+    const runRound = async (queries, note) => {
+      const settled = await Promise.allSettled(queries.map(q => dsSearch(q)));
+      const items = settled.map((x, i) => ({
+        q: queries[i],
+        n: x.status === "fulfilled" ? x.value.results.length : 0,
+        shape: x.status === "fulfilled" ? x.value.shape : "",
+        err: x.status === "rejected" ? String((x.reason && x.reason.message) || x.reason) : ""
+      }));
+      const raw = settled.filter(x => x.status === "fulfilled").reduce((a, x) => a.concat(x.value.results), []);
+      return { items, raw, note, queries };
+    };
     try {
-      const settled = await Promise.allSettled(PRED_QUERIES.map(q => dsSearch(q)));
-      const ok = settled.filter(x => x.status === "fulfilled");
-      const failed = settled.length - ok.length;
-      const sources = collectSources(ok.reduce((acc, x) => acc.concat(x.value), []));
-      if (!sources.length) {
-        const why = failed === settled.length
-          ? String((settled[0].reason && settled[0].reason.message) || settled[0].reason)
-          : "检索请求成功但没有返回匹配的网页";
-        throw new Error("没有拿到可用来源：" + why);
+      const rounds = [];
+      let r = await runRound(first, custom.length ? "自定义词" : "内置词");
+      rounds.push(r);
+      renderDiag(rounds.map(x => ({ items: x.items, note: x.note })));
+      let rawAll = r.raw.slice();
+
+      /* 第一轮零结果、且不是「全部请求报错」时，自动换更宽的词再试一轮 */
+      if (!rawAll.length && r.items.some(d => !d.err) && !custom.length) {
+        const prog = $("#predProgress");
+        if (prog) prog.textContent = "第一轮没有匹配网页，正在换更宽的检索词重试…";
+        const r2 = await runRound(PRED_QUERIES_FALLBACK, "自动放宽重试");
+        rounds.push(r2);
+        renderDiag(rounds.map(x => ({ items: x.items, note: x.note })));
+        rawAll = rawAll.concat(r2.raw);
       }
-      renderSources(sources, `${PRED_QUERIES.length} 个检索词 · 成功 ${ok.length}${failed ? " / 失败 " + failed : ""} · 按相关度排序`);
+
+      const sources = collectSources(rawAll);
+      const usedQueries = rounds.reduce((a, x) => a.concat(x.queries), []);
+      if (!sources.length) {
+        const errs = rounds.reduce((a, x) => a.concat(x.items.filter(d => d.err).map(d => d.err)), []);
+        const hint = errs.length
+          ? `检索请求报错：${String(errs[0]).replace(/。+$/, "")}。请到设置里检查 Key 与余额，稍后重试。`
+          : "所有检索词都返回了空结果（HTTP 200 但没有匹配网页）。可在上方「检索词」框换成更短、更常见的说法再试，或直接用下方搜索引擎链接；空结果不计费。";
+        throw new Error("没有拿到可用来源：" + hint);
+      }
+      renderSources(sources, `${rounds.length} 轮 / ${usedQueries.length} 个检索词 · 命中 ${sources.length} 条 · 按相关度排序`);
       const prog = $("#predProgress");
       if (prog) prog.textContent = `拿到 ${sources.length} 条来源，正在让模型只依据这些页面汇总…`;
-      const raw = await callModel(PREDICT_SYSTEM_WEB, buildWebUser(sources));
+      const raw = await callModel(PREDICT_SYSTEM_WEB, buildWebUser(sources, usedQueries));
       let data;
       try { data = parseModelJSON(raw); }
       catch (e) {
@@ -4760,7 +4839,7 @@ ${risk}
       }
       renderPredictResult(data, sources, true);
     } catch (e) {
-      predError("联网检索或汇总失败", String(e && e.message || e) + "（若来源已列出，仍可点开核实）");
+      predError("联网检索或汇总失败", String(e && e.message || e));
     } finally {
       P.busy = false;
       btn.disabled = false; btn2.disabled = false;
@@ -4771,11 +4850,17 @@ ${risk}
     renderPredStatic();
     renderPredSearches();
     updatePredictHint();
+    const q = $("#predQuery");
+    if (q) {
+      try { q.value = store.get("ky-pred-query") || ""; } catch (e) {}
+      q.addEventListener("input", () => store.set("ky-pred-query", q.value));
+    }
     $("#predictRun").addEventListener("click", runPredictSearch);
     $("#predictLocal").addEventListener("click", runPredictLocal);
     $("#predictClear").addEventListener("click", () => {
       $("#predictResult").innerHTML = "";
       $("#predSources").innerHTML = "";
+      const d = $("#predDiag"); if (d) { d.innerHTML = ""; d.style.display = "none"; }
     });
   }
 
