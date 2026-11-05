@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2027 英语一 · 写作作战台</title>
 <meta name="description" content="英语一作文真题库、模板拼装台与京区评分自查：把 2001—2026 真题拆成可复用的骨架。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23a8342a'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23f5efe3' font-family='serif'%3E%E4%BA%AC%3C/text%3E%3C/svg%3E">
 <style>:root{
   --paper:#f5efe3;
   --paper-2:#efe6d5;
@@ -440,6 +441,8 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
 @media(max-width:1080px){
   .app{grid-template-columns:minmax(0,1fr)}
   .rail{position:sticky;top:0;height:auto;max-width:100vw;flex-direction:row;align-items:center;padding:10px 18px;background:rgba(245,239,227,.92);backdrop-filter:blur(10px);z-index:30;border-right:none;border-bottom:1px solid var(--line);gap:14px;overflow-x:auto}
+  .rail .brand{flex:none}
+  .rail .brand b{white-space:nowrap;font-size:15px}
   .rail .brand span,.rail .rail-foot{display:none}
   .rail nav{flex-direction:row;gap:2px}
   .rail nav a{padding:7px 10px;white-space:nowrap}
@@ -473,6 +476,90 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
   section{break-inside:avoid}
   .exam,.tpl,.panel{box-shadow:none}
 }
+
+/* ---------- v2: 预设 / 旱区 / 押题 ---------- */
+.trace i.f.m{background:var(--gold)}
+.link-btn{font-size:11px;color:var(--red);border-bottom:1px dashed var(--red-soft);padding:1px 0;line-height:1.4}
+.link-btn:hover{color:var(--ink);border-color:var(--ink)}
+.src-link{color:var(--blue);border-bottom:1px solid rgba(47,74,99,.3);font-size:10.5px;white-space:nowrap}
+.src-link:hover{border-color:var(--blue)}
+
+/* 设置弹窗：服务商下拉 */
+.preset-wrap{margin-bottom:14px}
+.preset-select{width:100%;font:inherit;font-size:13px;color:var(--ink);background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none;cursor:pointer}
+.preset-select:focus{border-color:var(--red-soft)}
+.preset-note{font-size:10.5px;color:var(--muted);line-height:1.65;margin:6px 0 0}
+.preset-note b{color:var(--green);font-weight:600}
+.auto-field{background:rgba(61,90,76,.05)!important;border-color:rgba(61,90,76,.22)!important;color:var(--ink-2)!important}
+.auto-badge{font-family:var(--mono);font-size:9px;color:var(--green);border:1px solid rgba(61,90,76,.3);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.test-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:2px 0 12px}
+.test-result{font-size:11px;line-height:1.6;color:var(--muted);flex:1;min-width:180px}
+.test-result.ok{color:var(--green)}
+.test-result.bad{color:var(--red)}
+.modal-body .g-label{margin-bottom:6px}
+.modal-body .modal-hint{margin-top:-4px}
+
+/* 旱区对照 */
+.region-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.region-row .select{flex:0 1 240px;max-width:270px}
+.region-verdict{font-size:11.5px;line-height:1.6;color:var(--ink-2);width:100%;margin-top:2px}
+.region-verdict b{color:var(--red)}
+.region-verdict b.wet{color:var(--green)}
+.region-verdict b.mid{color:var(--gold)}
+.region-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.region-table th,.region-table td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.7}
+.region-table th{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);font-weight:500;text-align:left}
+.region-table td:first-child{white-space:nowrap;width:120px}
+.rb{display:inline-block;font-size:10px;font-family:var(--mono);letter-spacing:.04em;border-radius:4px;padding:2px 7px;white-space:nowrap}
+.rb.s{background:rgba(168,52,42,.1);color:var(--red);border:1px solid rgba(168,52,42,.25)}
+.rb.ms{background:rgba(168,132,63,.12);color:#8a6a2f;border:1px solid rgba(168,132,63,.3)}
+.rb.m{background:rgba(30,32,28,.04);color:var(--muted);border:1px solid var(--line)}
+.rb.w{background:rgba(61,90,76,.09);color:var(--green);border:1px solid rgba(61,90,76,.25)}
+.region-src{font-size:10.5px;color:var(--muted);line-height:1.8;margin-top:12px}
+
+/* 押题雷达 */
+.pred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:13px}
+.pred-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 17px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+.pred-card .ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pred-card h4{font-family:var(--serif);font-size:15.5px;margin:0}
+.pred-card .ptype{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.06em}
+.pred-card ul{margin:2px 0 0;padding-left:17px;font-size:12px;line-height:1.75;color:var(--ink-2)}
+.pred-card li{margin-bottom:2px}
+.pred-card .pfoot{font-size:10.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:auto;line-height:1.6}
+.pred-card .pfoot b{color:var(--ink-2);font-weight:600}
+.pred-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 12px}
+.pred-search{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.pred-search a{font-size:11px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:rgba(255,255,255,.4)}
+.pred-search a:hover{border-color:var(--blue);color:var(--blue)}
+.pred-result{margin-top:14px}
+.pred-result .pred-card{margin-bottom:10px}
+.pred-meta{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-bottom:10px}
+@media(max-width:560px){.region-table td:first-child{white-space:normal;width:auto}}
+
+/* ---------- v3: 联网检索 ---------- */
+.cap-web,.cap-off{font-family:var(--mono);font-size:9.5px;border-radius:4px;padding:1px 6px;margin-right:4px;white-space:nowrap}
+.cap-web{background:rgba(61,90,76,.1);color:var(--green);border:1px solid rgba(61,90,76,.28)}
+.cap-off{background:rgba(30,32,28,.05);color:var(--muted);border:1px solid var(--line)}
+.preset-note .cap-web,.preset-note .cap-off{vertical-align:middle}
+.pred-cost{font-size:11px;line-height:1.85;color:var(--ink-2);background:rgba(61,90,76,.05);border:1px solid rgba(61,90,76,.16);border-radius:9px;padding:10px 12px;margin-bottom:12px}
+.pred-cost b{color:var(--green)}
+.pred-cost code,.g-error code{font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.65);padding:1px 4px;border-radius:3px}
+.src-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:20px 0 9px;border-top:1px solid var(--line);padding-top:14px}
+.src-head h4{font-family:var(--serif);font-size:14px;margin:0}
+.src-head span{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.src-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:9px}
+.src-card{display:flex;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:11px 12px;scroll-margin-top:80px}
+.src-card:target{border-color:var(--blue);box-shadow:0 0 0 2px rgba(47,74,99,.14)}
+.src-n{font-family:var(--mono);font-size:10px;color:var(--blue);flex:0 0 auto;padding-top:2px}
+.src-main{min-width:0;flex:1}
+.src-main>a{font-size:12.5px;color:var(--ink);font-weight:600;line-height:1.5;word-break:break-word}
+.src-main>a:hover{color:var(--blue)}
+.src-meta{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin:3px 0 5px;line-height:1.5}
+.src-main p{font-size:11px;color:var(--ink-2);line-height:1.6;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.refs{margin-left:6px;white-space:nowrap}
+.src-ref{font-family:var(--mono);font-size:10px;color:var(--blue);border-bottom:1px solid rgba(47,74,99,.3);margin-left:3px}
+.src-ref:hover{color:var(--red);border-color:var(--red)}
+@media(max-width:560px){.src-list{grid-template-columns:1fr}.pred-actions .btn-primary{width:100%}}
 </style>
 </head>
 <body>
@@ -494,6 +581,7 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
       <a href="#grade"><i>06</i>批改</a>
       <a href="#upgrade"><i>07</i>升级</a>
       <a href="#criteria"><i>08</i>评分</a>
+      <a href="#predict"><i>09</i>押题雷达</a>
     </nav>
     <div class="rail-foot">
       <button class="rail-settings" id="settingsBtn">⚙️ 设置</button>
@@ -568,10 +656,11 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
           <div><b>03 模板库</b><p>先选“位置”，再选“功能”。槽位后标了名词/动词/从句；点“拼装”直接送入拼装台。</p></div>
           <div><b>04 语料库</b><p>主题词按话题取词，黄金句式按首/中/尾取句。写之前先来这拿 3 个词、1 个句式。</p></div>
           <div><b>05 拼装台</b><p>选题型和风格，生成“首—中—尾”骨架；逐段换句、复制，再填题目细节。</p></div>
-          <div><b>06 闭环批改</b><p>粘贴作文 → 选旱区/宽判 → 批改 → “应用逐句修改” → 再批一次。AI 档位只定位问题，不是官方分。</p></div>
+          <div><b>06 闭环批改</b><p>粘贴作文 → 选旱区/宽判（可先选报考地区自动判定）→ 批改 → “应用逐句修改” → 再批一次。AI 档位只定位问题，不是官方分。</p></div>
           <div><b>07 京区升级</b><p>高危句先看“为什么危险”，再换替代句；高级句型和专属词汇都在这里。</p></div>
           <div><b>08 评分</b><p>官方五档 + 12 项交卷自查。写完一篇，用它找最弱的一项，不必纠结具体分数。</p></div>
-          <div class="api"><b>⚙️ API 设置</b><p>左下角“设置”填 DeepSeek Key；只存本机 localStorage，不上传本站。公共电脑用完点“清除 Key”。</p></div>
+          <div><b>09 押题雷达</b><p>已整理资料 + DeepSeek 官方联网检索出带链接的来源 + AI 汇总；每条结论可回原始网页核实。全是预测，不是真题，别当押题背。</p></div>
+          <div class="api"><b>⚙️ API 设置</b><p>点任意“⚙️ 设置”（批改区右上角 / 左下角）：选一个常见服务商模型，只填 Key 即可，模型名和地址自动填好。Key 只存本机，公共电脑用完点“清除 Key”。</p></div>
         </div>
       </div>
     </section>
@@ -725,6 +814,13 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
               <button data-mode="strict" class="on">旱区严判</button>
               <button data-mode="lenient">非旱区宽判</button>
             </div>
+            <div class="region-row" style="margin-top:10px">
+              <select id="gradeRegion" class="select" aria-label="按报考地区自动判定阅卷尺度">
+                <option value="">选择报考地区</option>
+              </select>
+              <button class="link-btn" id="regionHelp" type="button">哪些算旱区？查对照表 →</button>
+              <div class="region-verdict" id="regionVerdict">不确定自己是旱区还是非旱区？选一下报考地区，或点开对照表查看全国划分。</div>
+            </div>
           </div>
 
           <div class="g-field">
@@ -821,6 +917,47 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
       </div>
     </section>
 
+<section id="predict">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title"><span class="sec-no">09</span><h2>2027 押题雷达</h2></div>
+      <div class="sec-sub">已整理资料 + DeepSeek 官方联网检索 + AI 汇总；全部是预测，不是真题</div>
+    </div>
+    <div class="grade-status"><span class="count">静态资料 2026-11-05 · 联网检索为实时</span></div>
+  </div>
+
+  <div class="g-disclaimer">⚠️ 这一节全是<b>预测与推测</b>，不是真题、不是官方口径，也不能保证准确。押题只用来定复习优先级，绝不能替代把题型练全；考场上整段照搬预测范文同样会被判套作。</div>
+
+  <div class="panel" style="padding:22px 24px;margin-bottom:18px">
+    <div class="sec-title" style="margin-bottom:4px"><h3 style="margin:0">已整理 · 公开可查的预测资料</h3></div>
+    <div class="sec-note" style="text-align:left;margin-bottom:14px">检索于 2026-11-05，每条都附原页面链接。图书目录、课程表只是公开标题，<b>不等于老师本人的押题结论</b>；购买或报名前请以官方页面为准。</div>
+    <div class="pred-grid" id="predStatic"></div>
+  </div>
+
+  <div class="panel" style="padding:22px 24px">
+    <div class="sec-title" style="margin-bottom:4px"><h3 style="margin:0">联网检索 + AI 汇总</h3></div>
+    <div class="sec-note" style="text-align:left">点「联网检索并汇总」会调用 DeepSeek 官方网页搜索接口真实查当下公开资料，再让模型<b>只依据检索到的页面</b>整理；每条结论都带可点开的来源编号。</div>
+    <div class="pred-actions">
+      <button class="btn-primary" id="predictRun">联网检索并汇总</button>
+      <button class="pill-btn" id="predictLocal">仅 AI 整理（不联网）</button>
+      <button class="pill-btn" id="predictClear">清空结果</button>
+      <span class="count" id="predictHint">需先在设置里配置 API Key</span>
+    </div>
+    <div class="pred-cost"><b>关于联网检索：</b>走 DeepSeek 官方 <code>POST /v1/tools/search</code>（2026-11-05 核对官方文档，已实测浏览器可直连，含本地 <code>file://</code> 打开）。官方计费 5 元 / 1000 次成功请求，一次运行发 4 个检索词 ≈ 0.02 元，再加 1 次对话请求；搜索无结果或失败不计费。抓取正文的 <code>/v1/tools/fetch</code> 本页未启用。</div>
+    <div class="g-disclaimer" style="margin-bottom:0">如实说明：检索拿到的是<b>搜索引擎返回的公开网页</b>，不是命题组信息，也不保证网页内容属实；AI 汇总是模型对这些页面的归纳，仍可能理解错或漏掉。「仅 AI 整理」则是<b>不联网</b>的旧模式，只凭模型训练知识，可能过时或编造人名。凡涉及具体老师、书名、日期，请点开来源回原始页面核实；预测不是真题。</div>
+    <div class="pred-result" id="predictResult"></div>
+    <div id="predSources"></div>
+
+    <div class="sec-title" style="margin:18px 0 4px"><h3 style="margin:0;font-size:14px">手动用搜索引擎查（备用）</h3></div>
+    <div class="sec-note" style="text-align:left;margin-bottom:8px">不想花 API 费用、或当前 Key 不是 DeepSeek 官方时，用这些链接自己查。</div>
+    <div class="pred-search" id="predSearch"></div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:18px">
+    押题资料版权归原作者及出版方所有，本页只做书名 / 目录 / 公开文章的事实性摘录与链接，不转载正文。网络流传的“水旱区”“押题命中”均无官方依据；教育部从不公布作文预测，任何声称“命中原题”的说法都请自行核验。
+  </div>
+</section>
+
     <div class="copyright">
       <b>分享说明</b>
       <p>本页为个人学习笔记，所引句型/范文版权归原作者所有；如有侵权请联系删除，请支持正版。</p>
@@ -854,25 +991,34 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
     <div class="modal-head">
       <div>
         <h3>API 设置</h3>
-        <p>Key 只保存在本机浏览器，不会上传到本站；批改时直接随请求发给你填写的 API。</p>
+        <p>选一个常见服务商，模型名和接口地址自动填好；你只需要粘贴自己的 API Key。Key 只存本机浏览器，不会上传到本站。</p>
       </div>
       <button class="close" id="settingsClose" aria-label="关闭">✕</button>
     </div>
     <div class="modal-body">
-      <label class="g-label" for="apiKey">API Key（推荐 DeepSeek）</label>
+      <label class="g-label" for="apiPreset">① 服务商 / 模型 <span class="auto-badge">选完自动填</span></label>
+      <select id="apiPreset" class="preset-select" aria-label="选择服务商与模型"></select>
+      <p class="preset-note" id="apiPresetNote"></p>
+
+      <label class="g-label" for="apiModel" style="margin-top:14px">② 模型名 <span class="auto-badge" id="modelAutoBadge">已自动填</span></label>
+      <input id="apiModel" type="text" placeholder="deepseek-flash">
+
+      <label class="g-label" for="apiBase">③ API Base <span class="auto-badge" id="baseAutoBadge">已自动填</span></label>
+      <input id="apiBase" type="text" placeholder="https://api.deepseek.com">
+
+      <label class="g-label" for="apiKey" style="margin-top:14px">④ API Key <span class="auto-badge" style="background:rgba(168,52,42,.08);color:var(--red);border-color:rgba(168,52,42,.28)">只需手填这一项</span></label>
       <div class="key-row">
         <input id="apiKey" type="password" autocomplete="off" placeholder="sk-...">
         <button class="pill-btn" id="toggleKey" type="button">显示</button>
       </div>
+      <div class="test-row">
+        <button class="pill-btn" id="apiTest" type="button">测试连接</button>
+        <span class="test-result" id="apiTestResult">会发起一次极小的测试请求，可能产生微量费用。</span>
+      </div>
 
-      <label class="g-label" for="apiBase">API Base（可选）</label>
-      <input id="apiBase" type="text" placeholder="https://api.deepseek.com">
-      <p class="modal-hint">默认 DeepSeek。若浏览器直连被 CORS 拦截，可填你自己的代理/网关地址。</p>
-
-      <label class="g-label" for="apiModel">模型（可选）</label>
-      <input id="apiModel" type="text" placeholder="deepseek-chat">
-
-      <p class="modal-hint">DeepSeek Key 获取：platform.deepseek.com → API Keys。不要使用他人 Key；公共电脑用完请点“清除”。</p>
+      <p class="modal-hint" id="apiBaseHint">已实测（2026-11-05）：<b>DeepSeek 官方 API 允许浏览器跨域直连</b>，连本地 <code>file://</code> 打开都能用；其他厂商或自建代理若不开放 CORS，请选「自定义」填自己的代理地址。模型名以各家控制台为准，豆包（火山方舟）通常需填 ep- 开头的接入点 ID。</p>
+      <p class="modal-hint" id="apiSearchHint">选 DeepSeek 官方预设即可启用 09 节的「联网检索」：调用官方 /v1/tools/search 真实查网页，按 5 元 / 1000 次成功请求计费，一次运行约 4 次检索（≈0.02 元）。其他服务商只能用不联网的 AI 整理。</p>
+      <p class="modal-hint">各平台 Key 获取：DeepSeek platform.deepseek.com、通义百炼 bailian.console.aliyun.com、智谱 open.bigmodel.cn、Kimi platform.moonshot.cn、混元 console.cloud.tencent.com。不要使用他人 Key；公共电脑用完请点“清除 Key”。</p>
     </div>
     <div class="modal-foot">
       <button class="pill-btn" id="settingsClear">清除 Key</button>
@@ -880,6 +1026,24 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
         <button class="pill-btn" id="settingsCancel">取消</button>
         <button class="btn-primary" id="settingsSave">保存</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="regionWrap">
+  <div class="modal-overlay" id="regionOverlay"></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="旱区对照表">
+    <div class="modal-head">
+      <div>
+        <h3>旱区 / 非旱区对照</h3>
+        <p>民间经验划分，不是官方标准；不同来源说法并不一致，每年还会波动。</p>
+      </div>
+      <button class="close" id="regionClose" aria-label="关闭">✕</button>
+    </div>
+    <div class="modal-body" id="regionBody"></div>
+    <div class="modal-foot">
+      <span class="count">只影响公共课主观题 · 一志愿同校同标准</span>
+      <button class="pill-btn" id="regionCloseBtn">知道了</button>
     </div>
   </div>
 </div>
@@ -2789,10 +2953,10 @@ window.DB_CRITERIA = {
   function traceHtml(n) {
     if (n === 0) return `<span class="trace">格式</span>`;
     const label = n === 1 ? "低痕迹" : n === 2 ? "中痕迹" : "高痕迹";
-    const cls = n === 1 ? "f g" : "f";
+    const cls = n === 1 ? "f g" : n === 2 ? "f m" : "f";
     let dots = "";
-    for (let i = 1; i <= 3; i++) dots += `<i class="${i <= 4 - n ? cls : ""}"></i>`;
-    return `<span class="trace" title="模板痕迹：${label}">${dots}${label}</span>`;
+    for (let i = 1; i <= 3; i++) dots += `<i class="${i <= n ? cls : ""}"></i>`;
+    return `<span class="trace" title="模板痕迹：${label}（${n}/3）">${dots}${label}</span>`;
   }
 
   function slotsHtml(t) {
@@ -2898,6 +3062,33 @@ window.DB_CRITERIA = {
 
 
   /* ---------------- builder ---------------- */
+  /* 修复：模板卡片的「拼装」按钮原本调用未定义的 addToBuilder，点击后静默失效 */
+  function addToBuilder(t) {
+    if (!t) return;
+    S.buildScope = t.scope;
+    $$("#buildScope button").forEach(x => x.classList.toggle("on", x.dataset.scope === t.scope));
+    const wanted = t.types || [];
+    const candidates = PLANS.filter(p => p.scope === t.scope);
+    const target = candidates.find(p => p.types.some(ty => wanted.indexOf(ty) >= 0)) || candidates[0];
+    if (!target) { toast("这个模板暂时无法送入拼装台"); return; }
+    if (target.types.indexOf(S.buildType) < 0) S.buildType = target.types[0];
+    S.planId = target.id;
+    S.overrides = {};
+    let idx = target.parts.findIndex(p => p.label.indexOf(t.part) >= 0);
+    if (idx < 0) idx = target.parts.findIndex(p => {
+      const tp = TPLS.find(x => x.id === p.id);
+      return tp && tp.part === t.part;
+    });
+    if (idx < 0) idx = 0;
+    S.overrides[`${target.id}:${idx}`] = t.id;
+    renderBuildTypes();
+    renderBuilder({ notice: true });
+    document.getElementById("builder").scrollIntoView({ behavior: "smooth", block: "start" });
+    toast(`已把 ${t.id} 送入「${target.title}」的${t.part}`);
+  }
+
+  function rebuildBuilder() { renderBuilder({ notice: true }); }
+
   const BUILD_TYPES = {
     big: [
       ["图表·静态", "图表 · 静态（饼图/条形图）"],
@@ -3039,7 +3230,8 @@ window.DB_CRITERIA = {
     }));
   }
 
-  function renderBuilder() {
+  function renderBuilder(opts) {
+    opts = opts || {};
     renderBuildTypes();
     const plan = currentPlan();
     const box = $("#composer");
@@ -3090,6 +3282,7 @@ window.DB_CRITERIA = {
         <textarea id="draft" spellcheck="false"></textarea>
         <div class="oactions">
           <button class="pill-btn solid" id="saveDraft">存到本地</button>
+          <button class="pill-btn" id="resetSkeleton">重置为当前骨架</button>
           <button class="pill-btn" id="clearDraft">清空</button>
           <button class="pill-btn" id="copyDraft">复制</button>
         </div>
@@ -3097,7 +3290,10 @@ window.DB_CRITERIA = {
       </div>`;
     const ta = $("#draft");
     bindPicked(box);
-    ta.value = assembled(plan);
+    ta.value = assembled(plan);    /* 修复：切换方案/换句/换题型时原本会强制写回骨架，静默冲掉用户手写的草稿 */
+    const savedDraft = store.get("ky-writing-draft");
+    const hasDraft = savedDraft != null && savedDraft !== "";
+    ta.value = hasDraft ? savedDraft : assembled(plan);
     const updateWC = () => {
       const base = wordCount(ta.value);
       const slots = (ta.value.match(/\{[^}]+\}/g) || []).length;
@@ -3105,6 +3301,7 @@ window.DB_CRITERIA = {
       $("#wcEst").textContent = base + slots * 7;
     };
     updateWC();
+    if (hasDraft && opts.notice) toast("已保留你编辑的内容；点「重置为当前骨架」载入新方案");
     ta.addEventListener("input", () => {
       updateWC();
       store.set("ky-writing-draft", ta.value);
@@ -3112,6 +3309,12 @@ window.DB_CRITERIA = {
     $("#saveDraft").addEventListener("click", () => {
       store.set("ky-writing-draft", ta.value);
       toast("已存到本地，下次打开还在");
+    });
+    $("#resetSkeleton").addEventListener("click", () => {
+      ta.value = assembled(plan);
+      updateWC();
+      store.del("ky-writing-draft");
+      toast("已载入当前方案的骨架");
     });
     $("#clearDraft").addEventListener("click", () => {
       ta.value = "";
@@ -3126,18 +3329,18 @@ window.DB_CRITERIA = {
       const next = plans[(idx + 1) % plans.length];
       S.planId = next.id;
       S.overrides = {};
-      renderBuilder();
+      rebuildBuilder();
     });
     box.querySelectorAll("button[data-plan]").forEach(b => b.addEventListener("click", () => {
       S.planId = b.dataset.plan;
       S.overrides = {};
-      renderBuilder();
+      rebuildBuilder();
     }));
     box.querySelectorAll("select[data-part-idx]").forEach(sel => sel.addEventListener("change", () => {
       const i = sel.dataset.partIdx;
       if (sel.value) S.overrides[`${plan.id}:${i}`] = sel.value;
       else delete S.overrides[`${plan.id}:${i}`];
-      renderBuilder();
+      rebuildBuilder();
     }));
   }
 
@@ -3147,7 +3350,7 @@ window.DB_CRITERIA = {
     S.buildScope = b.dataset.scope;
     S.planId = null; S.overrides = {}; S.picked = [];
     $$("#buildScope button").forEach(x => x.classList.toggle("on", x === b));
-    renderBuilder();
+    rebuildBuilder();
   });
   $("#buildStyle").addEventListener("click", ev => {
     const b = ev.target.closest("button[data-style]");
@@ -3155,14 +3358,14 @@ window.DB_CRITERIA = {
     S.buildStyle = b.dataset.style;
     S.planId = null; S.overrides = {};
     $$("#buildStyle button").forEach(x => x.classList.toggle("on", x === b));
-    renderBuilder();
+    rebuildBuilder();
   });
   $("#buildTypes").addEventListener("click", ev => {
     const b = ev.target.closest("button[data-btype]");
     if (!b) return;
     S.buildType = b.dataset.btype;
     S.planId = null; S.overrides = {};
-    renderBuilder();
+    rebuildBuilder();
   });
 
   /* ---------------- criteria ---------------- */
@@ -3307,8 +3510,38 @@ window.DB_CRITERIA = {
 
   /* ---------------- grading ---------------- */
   const API_DEFAULT_BASE = "https://api.deepseek.com";
-  const API_DEFAULT_MODEL = "deepseek-chat";
-  const G = { mode: "strict", settings: { key: "", base: API_DEFAULT_BASE, model: API_DEFAULT_MODEL }, busy: false, last: null };
+  const API_DEFAULT_MODEL = "deepseek-flash";
+  const API_DEFAULT_PRESET = "deepseek-flash";
+  /* DeepSeek 官方联网检索端点：POST /v1/tools/search、/v1/tools/fetch
+     依据 api-docs.deepseek.com/zh-cn/guides/search（2026-11-05 核对） */
+  const DS_SEARCH_ENDPOINT = API_DEFAULT_BASE + "/v1/tools/search";
+
+  /* 常见服务商预设：选中后自动填好模型名与 API Base，用户只需粘贴 Key。
+     DeepSeek 两项按官方文档 2026-11-05 核对；其余为常见写法，厂商随时改 ID，以控制台为准。
+     search:true = 该预设可用官方 /v1/tools/search 做真实联网检索；
+     flat:true   = 关闭思考模式，让 temperature 生效、响应更快更稳（DeepSeek V4 专有参数）。 */
+  const API_PRESETS = [
+    { g:"DeepSeek", id:"deepseek-flash", label:"DeepSeek · deepseek-flash（V4.1-Flash，推荐 · 可联网检索）", base:"https://api.deepseek.com", model:"deepseek-flash", search:true, flat:true, note:"现役默认模型，便宜稳定。旧名 deepseek-chat 已于 2026-07-24 退役，不要再填。此预设可启用 09 节的联网检索。" },
+    { g:"DeepSeek", id:"deepseek-v4-pro", label:"DeepSeek · deepseek-v4-pro（V4-Pro，更强更贵 · 可联网检索）", base:"https://api.deepseek.com", model:"deepseek-v4-pro", search:true, flat:true, note:"更强推理档，价格约为 Flash 的数倍；同样支持联网检索。" },
+    { g:"阿里通义千问", id:"qwen-plus", label:"通义千问 · qwen-plus（经典兼容名）", base:"https://dashscope.aliyuncs.com/compatible-mode/v1", model:"qwen-plus", note:"百炼 OpenAI 兼容模式，地址必须带 /compatible-mode/v1。" },
+    { g:"阿里通义千问", id:"qwen3.8-max", label:"通义千问 · qwen3.8-max", base:"https://dashscope.aliyuncs.com/compatible-mode/v1", model:"qwen3.8-max" },
+    { g:"阿里通义千问", id:"qwen3.8-flash", label:"通义千问 · qwen3.8-flash（更快更省）", base:"https://dashscope.aliyuncs.com/compatible-mode/v1", model:"qwen3.8-flash" },
+    { g:"智谱 GLM", id:"glm-5.3", label:"智谱 · glm-5.3", base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-5.3", note:"若控制台显示的模型 ID 不同，请选「自定义」手填。" },
+    { g:"智谱 GLM", id:"glm-5.3-flash", label:"智谱 · glm-5.3-flash（低价）", base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-5.3-flash" },
+    { g:"智谱 GLM", id:"glm-4.6", label:"智谱 · glm-4.6（旧版兼容）", base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-4.6" },
+    { g:"月之暗面 Kimi", id:"kimi-k3", label:"Kimi · kimi-k3", base:"https://api.moonshot.cn/v1", model:"kimi-k3" },
+    { g:"月之暗面 Kimi", id:"kimi-k2.6", label:"Kimi · kimi-k2.6", base:"https://api.moonshot.cn/v1", model:"kimi-k2.6" },
+    { g:"月之暗面 Kimi", id:"moonshot-v1-8k", label:"Kimi · moonshot-v1-8k（旧版兼容）", base:"https://api.moonshot.cn/v1", model:"moonshot-v1-8k" },
+    { g:"腾讯混元", id:"hunyuan-turbos", label:"混元 · hunyuan-turbos-latest", base:"https://api.hunyuan.cloud.tencent.com/v1", model:"hunyuan-turbos-latest" },
+    { g:"腾讯混元", id:"hy3", label:"混元 TokenHub · hy3（长文本）", base:"https://tokenhub.tencentcloudmaas.com/v1", model:"hy3" },
+    { g:"硅基流动 SiliconFlow", id:"siliconflow-dsv4", label:"硅基流动 · DeepSeek-V4-Flash", base:"https://api.siliconflow.cn/v1", model:"deepseek-ai/DeepSeek-V4-Flash", note:"一个 Key 可调多家开源模型，模型 ID 以控制台列表为准。" },
+    { g:"OpenAI", id:"gpt-4o-mini", label:"OpenAI · gpt-4o-mini", base:"https://api.openai.com/v1", model:"gpt-4o-mini", note:"模型名以你账户实际可用列表为准。" },
+    { g:"OpenAI", id:"gpt-4o", label:"OpenAI · gpt-4o", base:"https://api.openai.com/v1", model:"gpt-4o" },
+    { g:"自定义", id:"custom", label:"自定义 / 代理网关（自己填模型名与地址）", base:"", model:"", note:"适合自有代理网关、火山方舟（ep- 接入点 ID）、本地 Ollama 等。联网检索仅支持 DeepSeek 官方直连。" }
+  ];
+  const presetById = (id) => API_PRESETS.find(p => p.id === id) || null;
+  const G = { mode: "strict", settings: { key: "", base: API_DEFAULT_BASE, model: API_DEFAULT_MODEL, preset: API_DEFAULT_PRESET }, busy: false, last: null };
+  const P = { busy: false };
 
   const RISK_PATTERNS = [
     "with the rapid development", "with the development of society", "with the development of economy",
@@ -3326,6 +3559,24 @@ window.DB_CRITERIA = {
         G.settings.key = s.key || "";
         G.settings.base = s.base || API_DEFAULT_BASE;
         G.settings.model = s.model || API_DEFAULT_MODEL;
+        G.settings.preset = s.preset || "";
+        /* 迁移：deepseek-chat / deepseek-reasoner 等旧名已于 2026-07-24 退役，
+           老用户保存的 Key 要能继续用，这里自动换成现役 deepseek-flash。 */
+        const b = (G.settings.base || "").replace(/\/+$/, "");
+        const official = b === API_DEFAULT_BASE || b === API_DEFAULT_BASE + "/v1";
+        if (official && /^deepseek-(chat|reasoner|v4-flash|v4-flash-vision-exp)$/.test(G.settings.model)) {
+          G.settings.model = API_DEFAULT_MODEL;
+          G.settings.preset = API_DEFAULT_PRESET;
+          store.set("ky-api-settings", JSON.stringify(G.settings));
+        }
+        /* 兼容旧版设置：没有 preset 字段时按已存的 base + model 反查 */
+        if (!G.settings.preset) {
+          const hit = API_PRESETS.find(p => p.id !== "custom" && p.base === G.settings.base && p.model === G.settings.model);
+          G.settings.preset = hit ? hit.id : (G.settings.base && G.settings.base !== API_DEFAULT_BASE ? "custom" : API_DEFAULT_PRESET);
+        }
+        /* 预设已下架（如旧版 qwen-turbo）时归到「自定义」，保留用户原有 model/base，
+           避免误判成 DeepSeek 而给第三方请求加 thinking 参数或误开联网检索。 */
+        if (!presetById(G.settings.preset)) G.settings.preset = "custom";
       }
     } catch (e) {}
   }
@@ -3337,7 +3588,9 @@ window.DB_CRITERIA = {
     const el = $("#keyStatus");
     if (!el) return;
     if (G.settings.key) {
-      el.textContent = "已配置 · " + (G.settings.model || API_DEFAULT_MODEL);
+      const p = presetById(G.settings.preset);
+      const vendor = p && p.id !== "custom" ? p.g + " / " : "";
+      el.textContent = "已配置 · " + vendor + (G.settings.model || API_DEFAULT_MODEL);
       el.classList.add("ok");
     } else {
       el.textContent = "未配置 Key";
@@ -3345,15 +3598,107 @@ window.DB_CRITERIA = {
     }
   }
 
+  function renderPresetOptions() {
+    const groups = uniq(API_PRESETS.map(p => p.g));
+    $("#apiPreset").innerHTML = groups.map(g =>
+      `<optgroup label="${esc(g)}">` + API_PRESETS.filter(p => p.g === g)
+        .map(p => `<option value="${esc(p.id)}">${esc(p.label)}</option>`).join("") + `</optgroup>`
+    ).join("");
+  }
+  function applyPreset(id, keepCustomText) {
+    const p = presetById(id) || API_PRESETS[API_PRESETS.length - 1];
+    const custom = p.id === "custom";
+    const mi = $("#apiModel"), bi = $("#apiBase");
+    if (!custom) { mi.value = p.model; bi.value = p.base; }
+    else if (!keepCustomText) { mi.value = ""; bi.value = ""; }
+    mi.readOnly = !custom; bi.readOnly = !custom;
+    mi.classList.toggle("auto-field", !custom);
+    bi.classList.toggle("auto-field", !custom);
+    $("#modelAutoBadge").textContent = custom ? "请手填" : "已自动填";
+    $("#baseAutoBadge").textContent = custom ? "请手填" : "已自动填";
+    const cap = p.search
+      ? `<span class="cap-web">✓ 支持联网检索</span> 09 节可真实查网页`
+      : `<span class="cap-off">不联网</span> 09 节只能用不联网整理 / 搜索引擎链接`;
+    $("#apiPresetNote").innerHTML = custom
+      ? `自行填写模型名与 API Base：自有代理网关、火山方舟（ep- 接入点 ID）、本地 Ollama 等。<br>${cap}`
+      : `<b>${esc(p.g)}</b> · 模型名与接口地址已自动填好，你只需在下方粘贴 Key。${esc(p.note || "")}<br>${cap}`;
+    return p;
+  }
   function openSettings() {
     $("#apiKey").value = G.settings.key || "";
-    $("#apiBase").value = G.settings.base || "";
-    $("#apiModel").value = G.settings.model || "";
+    const tr = $("#apiTestResult");
+    tr.className = "test-result";
+    tr.textContent = "会发起一次极小的测试请求，可能产生微量费用。";
+    let id = G.settings.preset;
+    if (!id || !presetById(id)) {
+      const hit = API_PRESETS.find(p => p.id !== "custom" && p.base === G.settings.base && p.model === G.settings.model);
+      id = hit ? hit.id : (G.settings.base && G.settings.base !== API_DEFAULT_BASE ? "custom" : API_DEFAULT_PRESET);
+    }
+    $("#apiPreset").value = id;
+    applyPreset(id, false);
+    if (id === "custom") {
+      $("#apiModel").value = G.settings.model || "";
+      $("#apiBase").value = G.settings.base || "";
+    }
     $("#settingsWrap").classList.add("open");
     setTimeout(() => $("#apiKey").focus(), 60);
   }
   function closeSettings() {
     $("#settingsWrap").classList.remove("open");
+  }
+
+  /* 连通性自检：把 CORS / 401 / 404 / 模型名错误直接显示出来 */
+  async function testConnection() {
+    const out = $("#apiTestResult"), btn = $("#apiTest");
+    const key = $("#apiKey").value.trim();
+    if (!key) { out.className = "test-result bad"; out.textContent = "请先填 API Key 再测试。"; return; }
+    const base = ($("#apiBase").value.trim() || API_DEFAULT_BASE).replace(/\/+$/, "");
+    const model = $("#apiModel").value.trim() || API_DEFAULT_MODEL;
+    const p = presetById($("#apiPreset").value);
+    const url = /\/chat\/completions$/.test(base) ? base : base + "/chat/completions";
+    out.className = "test-result";
+    out.textContent = "测试中…（最多 20 秒）";
+    btn.disabled = true;
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 20000);
+    try {
+      const body = { model: model, messages: [{ role: "user", content: "Reply with OK only." }], max_tokens: 16, stream: false };
+      /* DeepSeek V4 默认开启思考模式，16 token 会先被推理耗尽；这里关掉 */
+      if (p && p.flat) body.thinking = { type: "disabled" };
+      if (!(p && p.noTemp)) body.temperature = 0.2;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+        body: JSON.stringify(body), signal: ctrl.signal
+      });
+      if (!res.ok) {
+        let detail = "";
+        try { detail = (await res.text()).slice(0, 180); } catch (e) {}
+        out.className = "test-result bad";
+        out.textContent = "HTTP " + res.status + "：" + (
+          res.status === 401 ? "Key 无效或已过期。" :
+          res.status === 404 ? "地址或模型名不对（404），检查 Base 是否漏了 /v1。" :
+          res.status === 429 ? "请求太频繁，稍后再试。" :
+          res.status === 402 ? "账户余额不足。" :
+          /model|not exist|not found/i.test(detail) ? "模型名不被接受，回控制台核对模型 ID。" :
+          (detail || "请求失败")
+        );
+        return;
+      }
+      const j = await res.json();
+      const ok = j && j.choices && j.choices[0] && j.choices[0].message;
+      out.className = "test-result " + (ok ? "ok" : "bad");
+      out.textContent = ok ? "连接成功，模型可用。" : "接口通了，但返回不是标准 chat/completions 格式，请检查 Base。";
+    } catch (e) {
+      const msg = String(e && e.message || e);
+      out.className = "test-result bad";
+      out.textContent = /Failed to fetch|NetworkError|Load failed/i.test(msg)
+        ? "连不上：网络/DNS 问题，或该服务商未开放浏览器跨域。DeepSeek 官方已实测放行，可回设置核对 Key 与预设。"
+        : /abort/i.test(msg) ? "超时（20 秒），检查网络或换更快的模型。" : "失败：" + msg;
+    } finally {
+      clearTimeout(timer);
+      btn.disabled = false;
+    }
   }
 
   function splitEssay(text) {
@@ -3480,33 +3825,43 @@ ${risk}
 
   async function callModel(system, user) {
     const s = G.settings;
-    let base = (s.base || API_DEFAULT_BASE).trim().replace(/\/+$/, "");
+    const base = (s.base || API_DEFAULT_BASE).trim().replace(/\/+$/, "");
     const url = /\/chat\/completions$/.test(base) ? base : base + "/chat/completions";
+    const p = presetById(s.preset);
+    const body = {
+      model: s.model || API_DEFAULT_MODEL,
+      messages: [{ role: "system", content: system }, { role: "user", content: user }],
+      max_tokens: 4096,
+      stream: false
+    };
+    /* DeepSeek V4 默认开思考模式；批改/汇总这类结构化任务关掉更快更稳，
+       且 temperature 只在非思考模式下生效。其他厂商不传这个专有参数。 */
+    if (p && p.flat) body.thinking = { type: "disabled" };
+    /* 修复：部分推理模型不接受 temperature；按预设跳过该参数 */
+    if (!(p && p.noTemp)) body.temperature = 0.2;
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 90000);
     try {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + s.key },
-        body: JSON.stringify({
-          model: s.model || API_DEFAULT_MODEL,
-          messages: [{ role: "system", content: system }, { role: "user", content: user }],
-          temperature: 0.2,
-          stream: false
-        }),
+        body: JSON.stringify(body),
         signal: ctrl.signal
       });
       if (!res.ok) {
         let detail = "";
         try { detail = (await res.text()).slice(0, 500); } catch (e) {}
         if (res.status === 401) throw new Error("Key 无效或已过期（401）。请到设置里检查 Key。");
-        if (res.status === 402) throw new Error("账户余额不足（402）。请到 DeepSeek 控制台充值。");
+        if (res.status === 402) throw new Error("账户余额不足（402）。请到对应平台控制台充值。");
         if (res.status === 429) throw new Error("请求太频繁（429）。等 10 秒再试。");
-        throw new Error("API 返回 " + res.status + "。" + detail);
+        if (res.status === 404) throw new Error("接口地址或模型名不存在（404）。请在设置里重选预设，或核对 API Base 是否需要 /v1。");
+        if (res.status === 400 && /model|not exist|not found|invalid/i.test(detail))
+          throw new Error("模型名或参数不被接受（400）。请在设置里重选预设，或到控制台核对模型 ID。" + detail.slice(0, 160));
+        throw new Error("API 返回 " + res.status + "。" + detail.slice(0, 300));
       }
       const json = await res.json();
       const content = json.choices && json.choices[0] && json.choices[0].message && json.choices[0].message.content;
-      if (!content) throw new Error("API 返回为空。");
+      if (!content) throw new Error("API 返回为空。可能是 max_tokens 太小或模型只返回了推理内容；到设置里换个预设再试。");
       return content;
     } finally {
       clearTimeout(timer);
@@ -3678,7 +4033,7 @@ ${risk}
     } catch (e) {
       const msg = String(e && e.message || e);
       if (/Failed to fetch|NetworkError|Load failed/i.test(msg)) {
-        errorResult("请求被浏览器拦截或网络不可达", "常见原因：① DeepSeek 未开放浏览器直连（CORS）；② 网络/代理问题。可在设置里把 API Base 换成你自己的代理网关，或先用“离线预检”。");
+        errorResult("请求发不出去或网络不可达", "DeepSeek 官方 API 已实测允许浏览器直连（含本地 file:// 打开），所以先到设置里点「测试连接」确认 Key 与预设；若用的是其他厂商或自建代理，可能是对方未开放 CORS，需要换成自己的代理网关。也可以先用「离线预检」。");
       } else if (/aborted|AbortError/i.test(msg)) {
         errorResult("请求超时", "90 秒没有返回。可以重试，或把模型换成更快的。");
       } else {
@@ -3692,6 +4047,7 @@ ${risk}
 
   function initGrade() {
     loadSettings();
+    renderPresetOptions();
     updateKeyStatus();
 
     const ta = $("#gradeText");
@@ -3730,23 +4086,423 @@ ${risk}
       inp.type = show ? "text" : "password";
       $("#toggleKey").textContent = show ? "隐藏" : "显示";
     });
+    $("#apiPreset").addEventListener("change", ev => {
+      applyPreset(ev.target.value, false);
+      const tr = $("#apiTestResult");
+      tr.className = "test-result";
+      tr.textContent = "会发起一次极小的测试请求，可能产生微量费用。";
+    });
+    $("#apiTest").addEventListener("click", testConnection);
     $("#settingsSave").addEventListener("click", () => {
       G.settings.key = $("#apiKey").value.trim();
+      G.settings.preset = $("#apiPreset").value;
       G.settings.base = $("#apiBase").value.trim() || API_DEFAULT_BASE;
       G.settings.model = $("#apiModel").value.trim() || API_DEFAULT_MODEL;
       saveSettings();
       closeSettings();
+      updatePredictHint();
       toast(G.settings.key ? "已保存，仅存在本机浏览器" : "已保存（Key 为空）");
     });
     $("#settingsClear").addEventListener("click", () => {
-      G.settings = { key: "", base: API_DEFAULT_BASE, model: API_DEFAULT_MODEL };
+      G.settings = { key: "", base: API_DEFAULT_BASE, model: API_DEFAULT_MODEL, preset: API_DEFAULT_PRESET };
       store.del("ky-api-settings");
-      $("#apiKey").value = ""; $("#apiBase").value = ""; $("#apiModel").value = "";
+      $("#apiKey").value = "";
+      $("#apiKey").type = "password";
+      $("#toggleKey").textContent = "显示";
+      $("#apiPreset").value = API_DEFAULT_PRESET;
+      applyPreset(API_DEFAULT_PRESET, false);
       updateKeyStatus();
+      updatePredictHint();
       toast("已清除本机 Key");
     });
   }
 
+
+  /* ---------------- 旱区 / 非旱区对照 ---------------- */
+  /* 民间经验划分：综合多家公开文章取常见共识。非官方、每年波动、各家说法不一致。
+     本页只用它决定「严判 / 宽判」自查尺度，不构成择校建议。 */
+  const REGION_GROUPS = [
+    { key:"s", rb:"s", label:"旱区 · 严判", mode:"strict",
+      list:["北京","上海","江苏","浙江"],
+      note:"多来源都列为阅卷最严，共识度最高。按严判自查最保险。" },
+    { key:"ms", rb:"ms", label:"偏严 · 有分歧", mode:"strict",
+      list:["天津","广东","湖北","四川","山东","福建","湖南","陕西"],
+      note:"部分来源列旱区、部分列适中，年度波动大；建议先按严判自查。" },
+    { key:"m", rb:"m", label:"适中 · 年度波动", mode:"",
+      list:["河北","辽宁","吉林","黑龙江","安徽","江西","山西","河南","重庆","广西","海南"],
+      note:"各来源说法冲突最多（同一省份被分别列为适中或偏水）。两种尺度各批一次更稳。" },
+    { key:"w", rb:"w", label:"非旱区 · 宽判", mode:"lenient",
+      list:["云南","贵州","甘肃","青海","宁夏","新疆","内蒙古","西藏"],
+      note:"多来源列为阅卷相对宽松（多为 B 区）；适合用宽判看结构与切题。" }
+  ];
+  const REGION_SOURCES = [
+    ["新东方考研网 · 水旱区怎么分", "https://kaoyan.xdf.cn/202608/15335591.html"],
+    ["新东方考研网 · 分布与影响", "https://kaoyan.xdf.cn/202608/15336715.html"],
+    ["新航道 · 水区旱区解读", "https://tj.xhd.cn/info/zxzq/1061159.html"],
+    ["搜狐教育 · 各省阅卷松紧", "https://learning.sohu.com/a/1055829379_122823253"]
+  ];
+  const regionGroupOf = (name) => REGION_GROUPS.find(g => g.list.indexOf(name) >= 0) || null;
+
+  function renderRegionSelect() {
+    const sel = $("#gradeRegion");
+    sel.innerHTML = `<option value="">选择报考地区</option>` +
+      REGION_GROUPS.map(g => `<optgroup label="${esc(g.label)}">` +
+        g.list.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join("") + `</optgroup>`).join("");
+    const saved = store.get("ky-writing-region");
+    if (saved && regionGroupOf(saved)) sel.value = saved;
+    else if (saved) store.del("ky-writing-region");
+  }
+  function applyRegion(name) {
+    const g = regionGroupOf(name), v = $("#regionVerdict");
+    if (!g) {
+      v.innerHTML = "不确定自己是旱区还是非旱区？选一下报考地区，或点开对照表查看全国划分。";
+      store.del("ky-writing-region");
+      return;
+    }
+    if (name) store.set("ky-writing-region", name);
+    if (g.mode) {
+      G.mode = g.mode;
+      $$("#gradeMode button").forEach(x => x.classList.toggle("on", x.dataset.mode === g.mode));
+      $("#gradeModeHint").textContent = g.mode === "strict"
+        ? "旱区：严查模板、首段脱节、语法硬伤，高危句单独标红"
+        : "宽判：看结构/切题，少量错误不重扣；不主动查模板";
+    }
+    const cls = g.key === "w" ? "wet" : g.key === "s" ? "" : "mid";
+    v.innerHTML = `<b class="${cls}">${esc(name)} → ${esc(g.label)}</b> · ${esc(g.note)}` +
+      (g.mode ? ` · 已自动切到「${g.mode === "strict" ? "旱区严判" : "非旱区宽判"}」，也可手动改回来` : " · 尺度分歧大，建议两种都试一次");
+  }
+  function openRegion() {
+    $("#regionBody").innerHTML = `
+      <div class="g-disclaimer" style="margin-bottom:14px"><b>先说清楚：</b>“水区 / 旱区”是考生对公共课主观题阅卷宽严的民间说法，<b>没有任何官方划分</b>。下表综合多家公开文章取常见共识，各家名单并不一致，且每年随报考热度小幅波动。本表只用来决定本页的「严判 / 宽判」自查尺度，<b>不构成择校或报考建议</b>。</div>
+      <table class="region-table">
+        <thead><tr><th>分档</th><th>常见被提及的省份</th></tr></thead>
+        <tbody>${REGION_GROUPS.map(g => `<tr>
+          <td><span class="rb ${g.rb}">${esc(g.label)}</span></td>
+          <td>${esc(g.list.join("、"))}<div style="font-size:10.5px;color:var(--muted);line-height:1.6;margin-top:4px">${esc(g.note)}</div></td>
+        </tr>`).join("")}</tbody>
+      </table>
+      <div class="region-src">
+        <b>怎么看这张表：</b>① 公共课主观题一般由<b>报考院校所在省份</b>的省级招办统一组织评卷（以当年官方说明为准）；客观题机器阅卷不受影响，院校自命题专业课也不受此划分影响。② 报考同一院校的考生在同一省份按同一标准评卷，一志愿竞争是公平的；差异主要体现在估分与跨省调剂。③ 网传 5—15 分的分差属经验估计，无官方数据。④ 同省不同阅卷点、不同年份也可能不同，别把标签当结论。<br>
+        <b>参考来源（说法互相有出入）：</b>${REGION_SOURCES.map(([t, u]) => `<a class="src-link" href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join(" · ")}
+      </div>`;
+    $("#regionWrap").classList.add("open");
+  }
+  function closeRegion() { $("#regionWrap").classList.remove("open"); }
+  function initRegions() {
+    renderRegionSelect();
+    const saved = store.get("ky-writing-region");
+    if (saved && regionGroupOf(saved)) applyRegion(saved);
+    $("#gradeRegion").addEventListener("change", ev => applyRegion(ev.target.value));
+    $("#regionHelp").addEventListener("click", openRegion);
+    $("#regionClose").addEventListener("click", closeRegion);
+    $("#regionCloseBtn").addEventListener("click", closeRegion);
+    $("#regionOverlay").addEventListener("click", closeRegion);
+    document.addEventListener("keydown", ev => {
+      if (ev.key === "Escape" && $("#regionWrap").classList.contains("open")) closeRegion();
+    });
+  }
+
+  /* ---------------- 2027 押题雷达 ---------------- */
+  /* 公开资料为 2026-11-05 检索到的事实性摘录（书名 / 课程目录 / 文章要点 + 原链接），
+     不转载正文、不声称任何老师「命中」；AI 汇总明确标注非实时联网。 */
+  const PRED_STATIC = [
+    { who:"王江涛《2027 高分写作考前预测 20 篇》", type:"图书目录 · 2026-10 出版",
+      items:[
+        "大作文 10 篇：图表（文科的重要性 / 健康 / 两代关系 / 硕士招生 / 外卖）",
+        "图画（自信 / 偶像崇拜）、材料（人工智能 / 环境保护 / 传统文化）",
+        "小作文 10 篇：介绍信、建议信、介绍+建议、介绍+邀请、告示、纪要等"
+      ],
+      note:"图书目录是公开选题，不等于作者本人声称的押题结论。", src:"文轩网图书页", url:"https://item.winxuan.com/1204500400" },
+    { who:"石雷鹏 · 27 考研英一写作全程班", type:"课程目录 · 橙啦",
+      items:[
+        "大作文预测 9 讲：新能源、AI 产品、电子书+材料作文、传统戏曲、行动力、陪伴、用眼与用心、举手之劳+图画",
+        "小作文预测 8 讲：通知+邀请、推荐 AI 工具、感谢+会议纪要、感谢、建议+说明、道歉、申请、推荐+建议"
+      ],
+      note:"课程表标题，具体内容以课程官方发布为准。", src:"橙啦课程页", url:"https://www.ichengla.com/coursedetail/57634.html" },
+    { who:"新东方在线《2027 考研英语题型预测》", type:"机构文章 · 2026-08",
+      items:[
+        "写作持续反模板，同质化句式、低端词汇在 2026 阅卷中被降档",
+        "2026 英一首次考双图表（养老机器人），2027 双图表可能再现",
+        "小作文「混合型」任务（建议+投诉等）大概率延续",
+        "科技与社会热点：AI、老龄化、新能源；大作文字数要求或上调至约 200 词"
+      ],
+      note:"机构趋势判断，不是命题组信息。", src:"新东方考研网", url:"https://kaoyan.xdf.cn/202608/15360428.html" },
+    { who:"新东方《2027 大作文最可能考的 4 个方向》", type:"机构文章 · 2026-07",
+      items:["AI 时代的机遇与挑战","青年就业观念转变","数字化时代的阅读与学习","传统文化的现代价值"],
+      note:"话题方向推测，用来积累主题词就够了。", src:"新东方网教育头条", url:"https://mtoutiao.xdf.cn/kaoyan/202607/15300181.html" },
+    { who:"口径提醒 · 中国教育在线（2026-11-03）", type:"科普文章 · 需辨别",
+      items:[
+        "该文按大纲口径写「英语一通常图画、英语二通常图表」",
+        "但 2024 图画+图表、2025 表格、2026 双图表，英一近三年已明显图表化",
+        "遇到「通常考图画」类科普文，请回本页 02 真题库核对近三年真题"
+      ],
+      note:"列在这里是为了提醒辨别口径，本身不是预测。", src:"中国教育在线", url:"https://www.eol.cn/kaoshi/ky/zx/202611/t20261103_2789627.shtml" },
+    { who:"网友推测 · 数字包容 / 线上公共服务表格题", type:"个人经验帖 · 无机构背书",
+      items:[
+        "一篇头条经验帖推测 2027 考「不同群体线上办理公共服务比例」表格",
+        "推理链：2024 公共设施 → 2025 生活水平 → 2026 技术适配 → 2027 人群差异",
+        "只当练手话题，别当押题"
+      ],
+      note:"个人推测，可信度最低。", src:"今日头条", url:"https://m.toutiao.com/w/1878446673987596/" }
+  ];
+  const PRED_SEARCHES = [
+    ["Bing · 老师预测", "https://www.bing.com/search?q=" + encodeURIComponent("2027 考研英语一 作文 预测 王江涛 石雷鹏 周思成")],
+    ["百度 · 2027 押题", "https://www.baidu.com/s?wd=" + encodeURIComponent("2027考研英语一 大作文 预测 押题")],
+    ["Bing · 题型趋势", "https://www.bing.com/search?q=" + encodeURIComponent("2027 考研英语一 大作文 双图表 反模板 趋势")],
+    ["Bing · 小作文", "https://www.bing.com/search?q=" + encodeURIComponent("2027 考研英语一 小作文 预测 混合型 纪要")],
+    ["Bing · 大纲变化", "https://www.bing.com/search?q=" + encodeURIComponent("2027 考研英语一 考试大纲 写作 变化")]
+  ];
+  /* ---- DeepSeek 官方联网检索（POST /v1/tools/search） ----
+     真实查网页 → 展示带编号的来源 → 让模型只依据这些来源汇总。
+     依据 api-docs.deepseek.com/zh-cn/guides/search（2026-11-05 核对）：
+     query 1~128 字符、count 1~50、need_content 返回网页正文；
+     结果含 title/url/snippet/summary/content/site_name/date/authority/rerank_score。 */
+  const PRED_QUERIES = [
+    "2027 考研英语一 大作文 预测 王江涛 石雷鹏 周思成 after:2026",
+    "2027 考研英语一 大作文 题型 双图表 反模板 趋势 after:2026",
+    "2027 考研英语一 小作文 预测 类型 混合型 after:2026",
+    "2027 考研英语 作文 押题 考前预测 20 篇 after:2026"
+  ];
+
+  function hostOf(u) {
+    try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return "网页"; }
+  }
+  function searchCapable() {
+    const p = presetById(G.settings.preset);
+    const b = (G.settings.base || "").trim().replace(/\/+$/, "");
+    return !!(p && p.search && G.settings.key && (b === API_DEFAULT_BASE || b === API_DEFAULT_BASE + "/v1"));
+  }
+  function dsErrText(status, detail) {
+    const d = String(detail || "");
+    if (status === 401) return "Key 无效或已过期（401），到设置里检查。";
+    if (status === 402) return "账户余额不足（402），请到 DeepSeek 控制台充值。";
+    if (status === 429) return "检索太频繁（429），稍后再试。";
+    if (status === 400) return "检索词或参数不合法（400）。" + d.slice(0, 120);
+    if (status === 403) return "请求被安全策略拒绝（403）。";
+    if (status === 500 || status === 504) return "DeepSeek 搜索服务暂时不可用（" + status + "），稍后重试。";
+    return "搜索接口返回 " + status + "。" + d.slice(0, 160);
+  }
+  async function dsSearch(query) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 45000);
+    try {
+      const res = await fetch(DS_SEARCH_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + G.settings.key },
+        body: JSON.stringify({ query: query, count: 6, need_content: true, ori_question: "2027 考研英语一写作有哪些公开预测？" }),
+        signal: ctrl.signal
+      });
+      if (!res.ok) {
+        let detail = "";
+        try { detail = (await res.text()).slice(0, 300); } catch (e) {}
+        throw new Error(dsErrText(res.status, detail));
+      }
+      const j = await res.json();
+      return Array.isArray(j.results) ? j.results : [];
+    } catch (e) {
+      if (e && /abort/i.test(String(e.name || "") + String(e.message || ""))) throw new Error("检索超时（45 秒），稍后重试。");
+      throw e;
+    } finally { clearTimeout(timer); }
+  }
+  function collectSources(list) {
+    const seen = new Set(), out = [];
+    (list || []).forEach(r => {
+      if (!r || !r.url) return;
+      const u = String(r.url).trim();
+      if (!/^https?:\/\//i.test(u) || seen.has(u)) return;
+      seen.add(u);
+      out.push({
+        n: 0,
+        title: String(r.title || "（无标题）").slice(0, 160),
+        url: u,
+        site: String(r.site_name || hostOf(u)).slice(0, 60),
+        date: r.date ? String(r.date).slice(0, 10) : "",
+        snippet: String(r.snippet || r.summary || "").slice(0, 260),
+        body: String(r.content || r.summary || r.snippet || "").slice(0, 1500),
+        authority: typeof r.authority === "number" ? r.authority : -1,
+        score: typeof r.rerank_score === "number" ? r.rerank_score : 0
+      });
+    });
+    out.sort((a, b) => (b.score - a.score) || (b.authority - a.authority));
+    return out.slice(0, 14).map((s, i) => { s.n = i + 1; return s; });
+  }
+  function renderSources(sources, meta) {
+    const box = $("#predSources");
+    if (!box) return;
+    if (!sources.length) { box.innerHTML = ""; return; }
+    box.innerHTML = `<div class="src-head"><h4>本次检索到的来源（${sources.length} 条）</h4><span>${esc(meta)}</span></div>
+      <div class="src-list">${sources.map(s => `<article class="src-card" id="src-${s.n}">
+        <div class="src-n">[${s.n}]</div>
+        <div class="src-main">
+          <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)} ↗</a>
+          <div class="src-meta">${esc(s.site)}${s.date ? " · " + esc(s.date) : ""}${s.authority >= 3 ? " · 高权威" : ""} · 相关度 ${s.score.toFixed(1)}</div>
+          <p>${esc(s.snippet || s.body.slice(0, 200))}</p>
+        </div>
+      </article>`).join("")}</div>`;
+  }
+  const PREDICT_SYSTEM_WEB = `你是考研英语写作资料整理助手。用户会给你一组「刚刚联网检索到的网页素材」，每条带 [编号]。
+严格约束：
+1. 只能依据给定素材整理，禁止补充素材之外的老师言论、书名、日期与结论；素材里没有的写「素材未提及」。
+2. 每条结论必须在 refs 里列出对应来源编号；没有来源支撑的整条删掉，不要凑数。
+3. 不要把预测写成既定事实，标注「机构文章 / 图书或课程目录 / 个人推测」等类型；禁止声称「命中原题」。
+4. 覆盖大作文题型与主题、小作文类型；给出多家共识与备考优先级（落到图表首段、图画保底、小作文格式、主题词）。
+5. 只输出 JSON，不要 markdown 代码块，不要额外解释。结构：
+{"asOf":"信息时效说明","items":[{"who":"","type":"","topics":[],"note":"","refs":[1,2]}],"consensus":[{"text":"","refs":[1,2]}],"priorities":[],"caveat":"必须写的免责说明"}`;
+  function buildWebUser(sources) {
+    const mat = sources.map(s =>
+      `[${s.n}] ${s.title}\n站点：${s.site}${s.date ? " / " + s.date : ""}\n链接：${s.url}\n内容：${s.body}`
+    ).join("\n\n---\n\n");
+    return `【检索时间】${new Date().toLocaleString("zh-CN")}\n【检索词】${PRED_QUERIES.join(" ｜ ")}\n\n【联网检索到的网页素材（共 ${sources.length} 条）】\n${mat}\n\n请只依据以上素材整理 2027 考研英语（一）写作的公开预测方向，输出指定 JSON。`;
+  }
+
+  const PREDICT_SYSTEM = `你是考研英语写作资料整理助手，任务是整理「2027 考研英语（一）写作」的公开预测方向。
+严格约束：
+1. 本次调用不联网，你只能依据训练时已有的知识整理。凡不能确定的，必须写明「不确定 / 需核实」；禁止编造具体的老师言论、书名、日期，禁止声称「命中原题」。
+2. 不要把预测写成既定事实；每条都要标注是「机构趋势判断」「图书/课程目录」还是「个人推测」。
+3. 覆盖大作文题型与主题、小作文类型；给出多家共识与备考优先级，优先级要落到本页能练的东西（图表首段、图画保底、小作文格式、主题词）。
+4. 只输出 JSON，不要 markdown 代码块，不要额外解释。结构：
+{"asOf":"对信息时效的说明","items":[{"who":"老师或机构","type":"图书/课程/机构文章/个人推测","topics":["预测方向"],"note":"可信度与核实提示"}],"consensus":["多家共同提到的方向"],"priorities":["备考优先级建议"],"caveat":"必须写的一段免责说明"}`;
+  const PREDICT_USER = `请整理截至你知识范围内，2027 考研英语一写作（大作文题型与主题、小作文类型）各位老师与机构的公开预测方向，并给出共识与备考优先级。记住：你无法联网，不确定处要标注需核实。`;
+
+  const predList = (arr) => Array.isArray(arr) ? arr.map(x => `<li>${esc(x)}</li>`).join("") : "";
+  function renderPredStatic() {
+    $("#predStatic").innerHTML = PRED_STATIC.map(p => `<article class="pred-card">
+      <div class="ph"><h4>${esc(p.who)}</h4><span class="ptype">${esc(p.type)}</span></div>
+      <ul>${p.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+      <div class="pfoot"><b>${esc(p.note)}</b><br><a class="src-link" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.src)} ↗</a></div>
+    </article>`).join("");
+  }
+  function renderPredSearches() {
+    $("#predSearch").innerHTML = PRED_SEARCHES.map(([t, u]) =>
+      `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join("");
+  }
+  function updatePredictHint() {
+    const el = $("#predictHint");
+    if (!el) return;
+    if (!G.settings.key) { el.textContent = "需先在设置里配置 API Key"; return; }
+    el.textContent = searchCapable()
+      ? "已配置 · " + (G.settings.model || API_DEFAULT_MODEL) + " · 联网检索可用"
+      : "已配置 · " + (G.settings.model || API_DEFAULT_MODEL) + " · 仅不联网整理（联网需 DeepSeek 官方 Key）";
+    const btn = $("#predictRun");
+    if (btn) btn.title = searchCapable()
+      ? "调用 DeepSeek /v1/tools/search 真实检索"
+      : "当前预设不支持联网检索，点开会看到说明";
+  }
+  function refLinks(refs, max) {
+    if (!Array.isArray(refs) || !max) return "";
+    const nums = refs.map(Number).filter(n => Number.isInteger(n) && n >= 1 && n <= max);
+    if (!nums.length) return "";
+    return `<span class="refs">来源 ` + nums.map(n => `<a class="src-ref" href="#src-${n}">[${n}]</a>`).join("") + `</span>`;
+  }
+  function renderPredictResult(data, sources, isWeb) {
+    const max = sources ? sources.length : 0;
+    const items = Array.isArray(data.items) ? data.items : [];
+    const cons = Array.isArray(data.consensus) ? data.consensus : [];
+    const pri = Array.isArray(data.priorities) ? data.priorities : [];
+    const mode = isWeb ? "依据下方带编号的来源" : "非实时联网检索 · 只凭模型训练知识";
+    let html = `<div class="pred-meta">${isWeb ? "联网检索 + " : ""}由 ${esc(G.settings.model || API_DEFAULT_MODEL)} 生成 · ${esc(data.asOf || (isWeb ? "本次实时检索" : "模型未标注知识时效"))} · ${esc(mode)}</div>`;
+    html += items.map(it => `<article class="pred-card">
+      <div class="ph"><h4>${esc(it.who || "未标注来源")}</h4><span class="ptype">${esc(it.type || "未标注类型")}</span></div>
+      <ul>${predList(it.topics)}</ul>
+      <div class="pfoot"><b>${esc(it.note || "请回官方渠道核实")}</b>${refLinks(it.refs, max)}</div>
+    </article>`).join("");
+    if (cons.length) html += `<article class="pred-card"><div class="ph"><h4>多家共同提到的方向</h4></div><ul>${cons.map(c =>
+      `<li>${esc(typeof c === "string" ? c : (c.text || ""))}${typeof c === "object" ? refLinks(c.refs, max) : ""}</li>`).join("")}</ul></article>`;
+    if (pri.length) html += `<article class="pred-card"><div class="ph"><h4>备考优先级建议</h4></div><ul>${predList(pri)}</ul></article>`;
+    html += `<div class="g-disclaimer"><b>${esc(data.caveat || "以上均为模型整理，可能过时或臆测，请以老师与机构官方发布为准。")}</b></div>`;
+    $("#predictResult").innerHTML = html;
+  }
+  function predError(head, msg) {
+    $("#predictResult").innerHTML = `<div class="g-error"><b>${esc(head)}</b><br>${esc(msg)}</div>
+      <div class="g-actions2"><button class="pill-btn" id="predErrSettings">检查 API 设置</button><button class="pill-btn" id="predErrLocal">改用仅 AI 整理</button></div>`;
+    const s = $("#predErrSettings"); if (s) s.addEventListener("click", openSettings);
+    const l = $("#predErrLocal"); if (l) l.addEventListener("click", runPredictLocal);
+  }
+
+  /* 模式 A：不联网，只凭模型训练知识（旧功能，保留作降级） */
+  async function runPredictLocal() {
+    if (!G.settings.key) { toast("先在设置里配置 API Key"); openSettings(); return; }
+    if (P.busy) return;
+    P.busy = true;
+    const btn = $("#predictLocal"), btn2 = $("#predictRun");
+    btn.disabled = true; btn2.disabled = true;
+    $("#predSources").innerHTML = "";
+    $("#predictHint").textContent = "正在让模型整理…（不联网，最多 90 秒）";
+    $("#predictResult").innerHTML = `<div class="g-loading"><div class="spinner"></div><span>AI 整理中（不联网）；模型只凭训练知识，结果需自行核实…</span></div>`;
+    try {
+      const raw = await callModel(PREDICT_SYSTEM, PREDICT_USER);
+      let data;
+      try { data = parseModelJSON(raw); }
+      catch (e) {
+        $("#predictResult").innerHTML = `<div class="g-error"><b>模型没有返回结构化 JSON。</b>下面是原文，请自行核对，不要当作事实。</div><div class="g-raw">${esc(raw)}</div>`;
+        return;
+      }
+      renderPredictResult(data, [], false);
+    } catch (e) {
+      predError("整理失败", String(e && e.message || e));
+    } finally {
+      P.busy = false;
+      btn.disabled = false; btn2.disabled = false;
+      updatePredictHint();
+    }
+  }
+
+  /* 模式 B：真实联网检索（DeepSeek Search API）→ 来源卡片 → 只依据来源的 AI 汇总 */
+  async function runPredictSearch() {
+    if (!G.settings.key) { toast("先在设置里配置 API Key"); openSettings(); return; }
+    if (!searchCapable()) {
+      $("#predSources").innerHTML = "";
+      predError("当前预设不支持联网检索", "联网检索走 DeepSeek 官方 /v1/tools/search，需要在设置里选 DeepSeek 官方预设（deepseek-flash / deepseek-v4-pro）并使用官方 API Base。其他服务商请用「仅 AI 整理」或下方搜索引擎链接。");
+      return;
+    }
+    if (P.busy) return;
+    P.busy = true;
+    const btn = $("#predictRun"), btn2 = $("#predictLocal");
+    btn.disabled = true; btn2.disabled = true;
+    $("#predSources").innerHTML = "";
+    $("#predictHint").textContent = "正在联网检索…";
+    $("#predictResult").innerHTML = `<div class="g-loading"><div class="spinner"></div><span id="predProgress">正在调用 DeepSeek 网页搜索（${PRED_QUERIES.length} 个检索词）…</span></div>`;
+    try {
+      const settled = await Promise.allSettled(PRED_QUERIES.map(q => dsSearch(q)));
+      const ok = settled.filter(x => x.status === "fulfilled");
+      const failed = settled.length - ok.length;
+      const sources = collectSources(ok.reduce((acc, x) => acc.concat(x.value), []));
+      if (!sources.length) {
+        const why = failed === settled.length
+          ? String((settled[0].reason && settled[0].reason.message) || settled[0].reason)
+          : "检索请求成功但没有返回匹配的网页";
+        throw new Error("没有拿到可用来源：" + why);
+      }
+      renderSources(sources, `${PRED_QUERIES.length} 个检索词 · 成功 ${ok.length}${failed ? " / 失败 " + failed : ""} · 按相关度排序`);
+      const prog = $("#predProgress");
+      if (prog) prog.textContent = `拿到 ${sources.length} 条来源，正在让模型只依据这些页面汇总…`;
+      const raw = await callModel(PREDICT_SYSTEM_WEB, buildWebUser(sources));
+      let data;
+      try { data = parseModelJSON(raw); }
+      catch (e) {
+        $("#predictResult").innerHTML = `<div class="g-error"><b>模型没有返回结构化 JSON。</b>下方来源列表仍可点开；原文如下，请自行核对。</div><div class="g-raw">${esc(raw)}</div>`;
+        return;
+      }
+      renderPredictResult(data, sources, true);
+    } catch (e) {
+      predError("联网检索或汇总失败", String(e && e.message || e) + "（若来源已列出，仍可点开核实）");
+    } finally {
+      P.busy = false;
+      btn.disabled = false; btn2.disabled = false;
+      updatePredictHint();
+    }
+  }
+  function initPredict() {
+    renderPredStatic();
+    renderPredSearches();
+    updatePredictHint();
+    $("#predictRun").addEventListener("click", runPredictSearch);
+    $("#predictLocal").addEventListener("click", runPredictLocal);
+    $("#predictClear").addEventListener("click", () => {
+      $("#predictResult").innerHTML = "";
+      $("#predSources").innerHTML = "";
+    });
+  }
 
   /* ---------------- init ---------------- */
   function init() {
@@ -3765,17 +4521,9 @@ ${risk}
     renderPhrases();
     renderUpgrade();
     initGrade();
+    initRegions();
+    initPredict();
     initNav();
-
-    const draft = store.get("ky-writing-draft");
-    if (draft) {
-      const ta = $("#draft");
-      if (ta) {
-        ta.value = draft;
-        $("#wcNum").textContent = wordCount(draft);
-        $("#wcEst").textContent = wordCount(draft) + ((draft.match(/\{[^}]+\}/g) || []).length) * 7;
-      }
-    }
   }
 
   init();
