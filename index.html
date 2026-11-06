@@ -625,11 +625,11 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
     <header class="hero">
       <div class="eyebrow">Postgraduate English I · Writing Desk</div>
       <h1>把 26 年真题，<br><em>拆成</em>可以复用的骨架</h1>
-      <p class="lede">面向京区英语一：先用题型筛选真题，再按“段落位置 + 功能”拼模板，最后用评分表自查。每一条模板都标了来源与模板痕迹，不让你背一堆用不上的漂亮话。</p>
+      <p class="lede">面向京区英语一：先用题型筛选真题，再按“段落位置 + 功能”拼模板，最后用评分表自查。每一条模板都标了模板痕迹与槽位词性，不让你背一堆用不上的漂亮话。</p>
       <div class="hero-stats">
         <div><b id="statBig">26</b><span>大作文真题</span></div>
         <div><b id="statSmall">22</b><span>小作文真题</span></div>
-        <div><b id="statTpl">142</b><span>可组合模板</span></div>
+        <div><b id="statTpl">162</b><span>可组合模板</span></div>
         <div><b id="statPlan">15</b><span>推荐方案</span></div>
       </div>
     </header>
@@ -728,7 +728,7 @@ td.band{font-family:var(--serif);font-weight:700;white-space:nowrap;color:var(--
       <div class="sec-head">
         <div>
           <div class="sec-title"><span class="sec-no">03</span><h2>模板库</h2></div>
-          <div class="sec-sub">按“位置 + 功能”两级筛选；含周思成、石雷鹏扫描件补遗 83 条，槽位后标词性</div>
+          <div class="sec-sub">按“位置 + 功能”两级筛选；含扫描件补遗 103 条，槽位后标词性</div>
         </div>
         <div class="tabs" id="tplScope">
           <button data-scope="big" class="on">大作文</button>
@@ -1903,7 +1903,13 @@ window.DB_TEMPLATES = [
     "X": "名词短语", "Y": "名词短语", "Z": "名词短语", "帮助": "名词短语",
     "动作": "动词短语", "伴随动作": "动词短语", "现象": "从句",
     "作用": "动词短语", "用途": "动词短语", "事迹": "句子", "标语": "引语",
-    "数据/现象": "从句", "反行为": "动词短语", "目的": "动词", "背景": "从句"
+    "数据/现象": "从句", "反行为": "动词短语", "目的": "动词", "背景": "从句",
+    "图一": "句子", "图二": "句子", "画面": "句子", "特点1": "名词短语", "特点2": "名词短语",
+    "体验": "名词短语", "人群": "名词短语", "行动": "动词短语", "时间": "名词短语",
+    "地点": "名词短语", "时长": "名词短语", "日期": "名词短语", "项目": "名词短语",
+    "内容": "名词短语", "人员": "名词短语", "环节": "名词短语", "专业": "名词短语",
+    "领域": "名词短语", "准备": "动词短语", "执行": "动词短语", "补偿": "动词短语",
+    "结果": "形容词/名词"
   };
   window.slotPos = function (slot) {
     if (POS_OVERRIDE[slot]) return POS_OVERRIDE[slot];
@@ -2477,6 +2483,130 @@ window.DB_TEMPLATES = [
       cn: "正是他们的{负面品质}导致他们{结果}。",
       slots: ["负面品质", "结果"], note: "强调句，负面归因；causes 随主语单复数变 cause。",
       source: "石雷鹏《20篇》p.122", trace: 1, level: "进阶" }
+  ];
+
+  const TYPE_OF = { "静态图": "图表·静态", "动态图": "图表·动态", "双图": "图表·双图", "图画单图": "图画·单图", "图画对比": "图画·双图", "材料": "材料" };
+  const SMALL_OF = { "开头": "答复信", "信息": "答复信", "建议": "建议信", "邀请活动": "邀请信", "推荐": "推荐信", "招募要求": "通知", "道歉感谢": "道歉信", "结尾": "答复信", "格式": "通知" };
+  pack.forEach(t => {
+    t.types = [t.scope === "big" ? (TYPE_OF[t.group] || "图表·静态") : (SMALL_OF[t.group] || "答复信")];
+  });
+  pack.forEach(t => T.push(t));
+  window.DB_SOURCE_PACK = (window.DB_SOURCE_PACK || []).concat(pack);
+})();
+
+/* 第三批补遗：图画模板 / 图表模板 / 小作文模板 扫描件 OCR 后校订 */
+(function () {
+  const T = window.DB_TEMPLATES || [];
+  const pack = [
+    /* ---------- 图画模板：双图 ---------- */
+    { id: "E01", pack: "图画模板", page: 1, scope: "big", part: "首段", group: "图画对比", func: "双图对比",
+      en: "The two pictures above present a sharp contrast. In the first picture, {图一}. However, in the second picture, {图二}.",
+      cn: "上面两幅图形成了鲜明对比。第一幅图中，{图一}；然而第二幅图中，{图二}。",
+      slots: ["图一", "图二"], note: "双图对比最干净的开头：先总说 contrast，再分左右。两图必须真的相反。",
+      source: "图画作文模板.pdf p.1", trace: 2, level: "稳妥" },
+    { id: "E02", pack: "图画模板", page: 1, scope: "big", part: "首段", group: "图画对比", func: "双图同主题",
+      en: "The two pictures, though showing different details, jointly revolve around the core theme of {主题}. In the first picture, {图一}, while in the second picture, {图二}.",
+      cn: "两幅图虽然细节不同，却共同围绕{主题}这一核心。第一幅图中，{图一}；而第二幅图中，{图二}。",
+      slots: ["主题", "图一", "图二"], note: "双图“无对比、同主题”专用（如 2016 榜样、2017 有书与读书）。",
+      source: "图画作文模板.pdf p.1", trace: 1, level: "进阶" },
+
+    /* ---------- 图表模板：双图四组合 ---------- */
+    { id: "F01", pack: "图表模板", page: 2, scope: "big", part: "首段", group: "双图", func: "动图+静图",
+      en: "The first chart illustrates the significant changes in {主题} from {y1} to {y2}: the number of {A} climbed from {n1} to {n2}. The second chart illustrates the striking contrast in {主题}: {B} accounts for {x}%, while {C} constitutes {y}%.",
+      cn: "第一幅图展示了{y1}至{y2}年{主题}的显著变化：{A}的数量从{n1}升至{n2}。第二幅图展示了{主题}的鲜明对比：{B}占{x}%，而{C}占{y}%。",
+      slots: ["主题", "y1", "y2", "A", "n1", "n2", "B", "x", "C", "y"],
+      note: "2024 型“图画/动态 + 静态”之外的双图组合也适用：一图写变化，一图写占比。",
+      source: "图表作文模板.pdf p.2", trace: 1, level: "进阶" },
+    { id: "F02", pack: "图表模板", page: 2, scope: "big", part: "首段", group: "双图", func: "动图+动图",
+      en: "The two charts respectively illustrate the significant changes in {A} and {B} from {y1} to {y2}. In the first chart, {A} climbed from {n1} to {n2}. In the second chart, {B} followed a downward trend, falling from {n3} to {n4}.",
+      cn: "两幅图分别展示了{y1}至{y2}年{A}和{B}的显著变化。第一幅图中，{A}从{n1}升至{n2}；第二幅图中，{B}呈下降趋势，从{n3}降至{n4}。",
+      slots: ["A", "B", "y1", "y2", "n1", "n2", "n3", "n4"],
+      note: "双动态图：两图各写一条趋势，不要只写总趋势。",
+      source: "图表作文模板.pdf p.2", trace: 1, level: "进阶" },
+    { id: "F03", pack: "图表模板", page: 2, scope: "big", part: "首段", group: "双图", func: "静图+静图",
+      en: "The two charts respectively present statistical information on {A} and {B}. In the first chart, {A} accounts for {x}%, while {B} constitutes {y}%. In the second chart, {A} accounts for {m}%, compared with {n}% for {B}.",
+      cn: "两幅图分别呈现{A}和{B}的统计情况。第一幅图中，{A}占{x}%，{B}占{y}%；第二幅图中，{A}占{m}%，{B}占{n}%。",
+      slots: ["A", "B", "x", "y", "m", "n"],
+      note: "双静态图：两图都是占比，重点写“两组比例是否一致/反转”。",
+      source: "图表作文模板.pdf p.2", trace: 1, level: "进阶" },
+    { id: "F04", pack: "图表模板", page: 2, scope: "big", part: "首段", group: "双图", func: "图画+图表",
+      en: "The picture vividly illustrates a scene in which {画面}. The chart on the right demonstrates the significant changes in {主题} from {y1} to {y2}, with its number climbing from {n1} to {n2}.",
+      cn: "图画生动展示了{画面}的场景。右侧图表则显示{y1}至{y2}年{主题}的显著变化，数量从{n1}升至{n2}。",
+      slots: ["画面", "主题", "y1", "y2", "n1", "n2"],
+      note: "2024 英一“图画 + 柱状图”专用：先画面、后数据，最后一句扣到同一主题。",
+      source: "图表作文模板.pdf p.2", trace: 1, level: "进阶" },
+
+    /* ---------- 小作文模板 ---------- */
+    { id: "G01", pack: "小作文模板", page: 2, scope: "small", part: "首段", group: "开头", func: "熟人寒暄",
+      en: "I am quite delighted that {背景}. I am writing this letter to {目的}.",
+      cn: "很高兴{背景}。我写这封信是为了{目的}。",
+      slots: ["背景", "目的"], note: "写给熟人：先寒暄再说明目的，比 I am writing to 更自然。",
+      source: "小作文模板.pdf p.2", trace: 2, level: "稳妥" },
+    { id: "G02", pack: "小作文模板", page: 2, scope: "small", part: "首段", group: "开头", func: "通知开头",
+      en: "To enrich students' campus life, our university will hold {活动}. The purpose of this notice is to {目的}.",
+      cn: "为丰富同学们的校园生活，我校将举办{活动}。本通知的目的是{目的}。",
+      slots: ["活动", "目的"], note: "通知开头：目的状语 + 活动 + The purpose of this notice，格式与信息一次到位。",
+      source: "小作文模板.pdf p.2", trace: 2, level: "稳妥" },
+    { id: "G03", pack: "小作文模板", page: 3, scope: "small", part: "末段", group: "结尾", func: "建议/信息收尾",
+      en: "I hope the above suggestions will be helpful to you. Should you have any further questions, please do not hesitate to contact me.",
+      cn: "希望以上建议对你有帮助。如有任何其他问题，请随时联系我。",
+      slots: [], note: "建议信/答复信通用收尾：祝愿 + 条件倒装联系方式。",
+      source: "小作文模板.pdf p.3", trace: 2, level: "稳妥" },
+    { id: "G04", pack: "小作文模板", page: 4, scope: "small", part: "中段", group: "建议", func: "建议·网络",
+      en: "You should make full use of online resources to gather information about {主题}, especially by turning to AI tools for assistance.",
+      cn: "你应充分利用网络资源搜集{主题}的信息，尤其是借助 AI 工具。",
+      slots: ["主题"], note: "建议第一条：具体到“网络资源 + AI 工具”，比“多查资料”可执行。",
+      source: "小作文模板.pdf p.4", trace: 1, level: "进阶" },
+    { id: "G05", pack: "小作文模板", page: 4, scope: "small", part: "中段", group: "建议", func: "建议·请教",
+      en: "You should turn to experienced people for advice, since their advice is grounded in real-world experience and can help you avoid common pitfalls.",
+      cn: "你应向有经验的人请教，因为他们的建议基于实际经验，能帮你少走弯路。",
+      slots: [], note: "建议第二条：找人请教，理由用 grounded in real-world experience，具体。",
+      source: "小作文模板.pdf p.4", trace: 1, level: "进阶" },
+    { id: "G06", pack: "小作文模板", page: 4, scope: "small", part: "中段", group: "建议", func: "建议·计划",
+      en: "You should develop a detailed plan about {主题} and break the task down into manageable daily steps, as this will help you avoid procrastination.",
+      cn: "你应制定关于{主题}的详细计划，把任务拆成每天可完成的小步骤，这能帮你避免拖延。",
+      slots: ["主题"], note: "建议第三条：计划 + 拆解 + 防拖延，动作链完整。",
+      source: "小作文模板.pdf p.4", trace: 1, level: "进阶" },
+    { id: "G07", pack: "小作文模板", page: 6, scope: "small", part: "中段", group: "邀请活动", func: "活动细节",
+      en: "First, the event is scheduled to take place at {时间} on {地点} and is expected to last for {时长}. Second, the main session will feature {内容} by {人员}, together with {环节}. Finally, participants are expected to arrive on time and observe all relevant rules.",
+      cn: "首先，活动定于{时间}在{地点}举行，预计持续{时长}。其次，主要环节是由{人员}进行{内容}，并有{环节}。最后，请参加者准时到场并遵守相关规定。",
+      slots: ["时间", "地点", "时长", "内容", "人员", "环节"], note: "介绍活动/邀请信的主体：时间地点 + 主环节 + 参加要求，一段顶三句。",
+      source: "小作文模板.pdf p.6", trace: 1, level: "进阶" },
+    { id: "G08", pack: "小作文模板", page: 7, scope: "small", part: "中段", group: "信息", func: "项目/计划",
+      en: "First, we will arrive in {地点} on {日期}, and {项目} is expected to last for {时长}. Second, during the preparation stage, you should {准备}. Finally, during the implementation stage, you should {执行} and document your experiences.",
+      cn: "首先，我们将于{日期}抵达{地点}，{项目}预计持续{时长}。其次，在准备阶段，你应{准备}。最后，在执行阶段，你应{执行}并记录经历。",
+      slots: ["地点", "日期", "项目", "时长", "准备", "执行"], note: "2019 支教/项目类：到达—准备—执行三段式，时间线清楚。",
+      source: "小作文模板.pdf p.7", trace: 1, level: "进阶" },
+    { id: "G09", pack: "小作文模板", page: 8, scope: "small", part: "中段", group: "信息", func: "个人资质",
+      en: "My qualifications are as follows. First, I major in {专业} and have extensive experience in {领域}. Second, I have a strong sense of responsibility and an outgoing personality.",
+      cn: "我的资质如下：首先，我主修{专业}，在{领域}有丰富经验；其次，我有很强的责任心和开朗的性格。",
+      slots: ["专业", "领域"], note: "申请/自荐：先给资质清单，再分两条，不要只喊“我很优秀”。",
+      source: "小作文模板.pdf p.8", trace: 1, level: "稳妥" },
+    { id: "G10", pack: "小作文模板", page: 8, scope: "small", part: "中段", group: "招募要求", func: "岗位要求",
+      en: "The requirements for applicants are as follows. First, applicants should major in {专业} and have extensive experience in {领域}. Second, applicants should have a strong sense of responsibility and good communication skills.",
+      cn: "申请者要求如下：首先，应主修{专业}并在{领域}有丰富经验；其次，应有较强的责任心和良好的沟通能力。",
+      slots: ["专业", "领域"], note: "招募通知：要求与职责分开写；这条专写要求。",
+      source: "小作文模板.pdf p.8", trace: 1, level: "稳妥" },
+    { id: "G11", pack: "小作文模板", page: 9, scope: "small", part: "中段", group: "推荐", func: "介绍物",
+      en: "First, {X} is characterized by {特点1} and {特点2}, which can offer you an enjoyable {体验} experience. Second, it enjoys widespread popularity among {人群}. Therefore, I strongly recommend that you {行动} in person.",
+      cn: "首先，{X}以{特点1}和{特点2}著称，能给你带来愉快的{体验}体验；其次，它在{人群}中很受欢迎。因此，我强烈建议你亲自{行动}。",
+      slots: ["X", "特点1", "特点2", "体验", "人群", "行动"], note: "介绍电影/书/景点/场馆：特点 + 受欢迎度 + 建议亲自去，三层。",
+      source: "小作文模板.pdf p.9", trace: 1, level: "进阶" },
+    { id: "G12", pack: "小作文模板", page: 11, scope: "small", part: "中段", group: "信息", func: "传统文化介绍",
+      en: "As one of China's treasured cultural symbols, {X} has a long history spanning {时间} and carries profound cultural significance.",
+      cn: "作为中国珍贵的文化符号之一，{X}有着{时间}的悠久历史，承载着深厚的文化意义。",
+      slots: ["X", "时间"], note: "文化类介绍信（京剧/书法/家书/节日）总起句；后面接具体价值。",
+      source: "小作文模板.pdf p.11", trace: 1, level: "进阶" },
+    { id: "G13", pack: "小作文模板", page: 13, scope: "small", part: "中段", group: "信息", func: "原因解释",
+      en: "First of all, the main reason is that {原因}, which has made me {结果}.",
+      cn: "首先，主要原因是{原因}，这使我{结果}。",
+      slots: ["原因", "结果"], note: "道歉/感谢/辞职/投诉通用原因句；which 后接结果，避免只解释不交代影响。",
+      source: "小作文模板.pdf p.13", trace: 1, level: "稳妥" },
+    { id: "G14", pack: "小作文模板", page: 13, scope: "small", part: "中段", group: "道歉感谢", func: "补偿/回礼",
+      en: "To make up for this, I will {补偿}.",
+      cn: "为弥补这一点，我将{补偿}。",
+      slots: ["补偿"], note: "道歉/辞职的补救动作；必须具体（完成交接/寄回/赔偿）。",
+      source: "小作文模板.pdf p.13", trace: 1, level: "稳妥" }
   ];
 
   const TYPE_OF = { "静态图": "图表·静态", "动态图": "图表·动态", "双图": "图表·双图", "图画单图": "图画·单图", "图画对比": "图画·双图", "材料": "材料" };
